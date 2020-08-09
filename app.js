@@ -44,8 +44,8 @@ setInterval(async () => {
     }
 }, txVolTimeInterval);
 
-// Updates DSA Creation Count every 1 hour
-const creationCountTimeInterval = 1000*60*60;
+// Updates DSA Creation Count every 1.25 hour
+const creationCountTimeInterval = 1000*60*60*1.25;
 setInterval(async () => {
     try {
         await updateDsaCreationCount();
