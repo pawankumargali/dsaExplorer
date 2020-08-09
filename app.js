@@ -8,7 +8,7 @@ const dbConnect = require('./dbConnect');
 const updateDsaCreationCount = require('./scripts/updateDsaCreationCount');
 const updateTxVolumes = require('./scripts/updateTxVolumes');
 
-// SERVER
+// SERVER SETUP
 const app = express();
 app.listen(process.env.PORT, err => {
     if(err) 
@@ -17,7 +17,11 @@ app.listen(process.env.PORT, err => {
         console.log(`Listening on Port ${process.env.PORT}...`);
 });
 
-// DB
+// Index Page Redirect to Documentation
+app.get('/', (req, res) => res.redirect('https://documenter.getpostman.com/view/10301892/T1LJk8xS?version=latest'));
+
+
+// DB CONNECTION
 dbConnect();
 
 // APP MIDDLEWARE
@@ -27,9 +31,7 @@ app.use(cors());
 
 // APP ROUTES MIDDLEWARE
 const dsaRouter = require('./routes/dsa');
-
 app.use('/api', dsaRouter);
-
 
 // Updates 24hr Transaction Vol through Dexes every 15 mins
 const txVolTimeInterval = 1000*60*15;
