@@ -1,0 +1,23 @@
+{
+  "name": "dsaexlorer-api",
+  "version": "1.0.0",
+  "description": "api updates and returns dsa creation count and 24hr transaction vol through dexes",
+  "main": "app.js",
+  "dependencies": {
+    "coingecko-api": "^1.0.10",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.28",
+    "web3": "^1.2.11"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": "12.14.1"
+  },
+  "author": "pawankumargali",
+  "license": "ISC"
+}
