@@ -33,8 +33,8 @@ app.use(cors());
 const dsaRouter = require('./routes/dsa');
 app.use('/api', dsaRouter);
 
-// Updates 24hr Transaction Vol through Dexes every 15 mins
-const txVolTimeInterval = 1000*60*15;
+// Updates 24hr Transaction Vol through Dexes every 30 mins
+const txVolTimeInterval = 1000*60*30;
 setInterval(async () => {
     try {
         await updateTxVolumes();
