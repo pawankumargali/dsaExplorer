@@ -34,7 +34,7 @@ const dsaRouter = require('./routes/dsa');
 app.use('/api', dsaRouter);
 
 // Updates 24hr Transaction Vol through Dexes every 30 mins
-const txVolTimeInterval = 1000*60*30;
+const txVolTimeInterval = 1000*60*60;
 setInterval(async () => {
     try {
         await updateTxVolumes();
@@ -45,7 +45,7 @@ setInterval(async () => {
 }, txVolTimeInterval);
 
 // Updates DSA Creation Count every 1.25 hour
-const creationCountTimeInterval = 1000*60*60*1.25;
+const creationCountTimeInterval = 1000*60*60*2.25;
 setInterval(async () => {
     try {
         await updateDsaCreationCount();
