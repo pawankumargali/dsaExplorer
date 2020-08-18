@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config;
 const Web3 = require('web3');
 const { instaListContract, instaEventContract }= require('../contracts/instaDappContracts');
 const oasisDexContract = require('../contracts/oasisDexContract');
@@ -6,24 +6,31 @@ const kyberReserveContract = require('../contracts/kyberReserveContract');
 const { curveSUsdContract, curveSBtcContract, curveYContract } = require('../contracts/curveContracts');
 const { getExchangePrice, getEthPriceInUSD } = require('./coinExPrices');
 const TxVolume = require('../models/txVolume');
+const { WEB3_PROVIDER_URL, TX_VOL_OBJ_ID } = require('../config');
 
-const web3 = new Web3(new Web3.providers.HttpProvider(process.env.WEB3_PROVIDER_URL));
-// const web3 = new Web3(new Web3.providers.WebsocketProvider(process.env.WEB3_PROVIDER_URL));
+const web3 = new Web3(new Web3.providers.HttpProvider(WEB3_PROVIDER_URL));
 
-// Curve Contracts
+/* CONTRACTS */ 
+
+// Curve
 const curveSUsd = new web3.eth.Contract(curveSUsdContract.abi, curveSUsdContract.address);
 const curveSBtc = new web3.eth.Contract(curveSBtcContract.abi, curveSBtcContract.address);
 const curveY = new web3.eth.Contract(curveYContract.abi, curveYContract.address);
-// Kyber Contract
+
+// Kyber
 const kyberReserve = new web3.eth.Contract(kyberReserveContract.abi, kyberReserveContract.address);
-// Oasis Contract
+
+// Oasis
 const oasisDex = new web3.eth.Contract(oasisDexContract.abi,  oasisDexContract.address);
+
 // InstaDapp Contract for 1inch and uniswap
 const instaEvent = new web3.eth.Contract(instaEventContract.abi, instaEventContract.address);
+
 // InstaDapp contract for finding if address is DSA
 const instaList = new web3.eth.Contract(instaListContract.abi, instaListContract.address);
 
-// Updates last 24 hr transaction volume of curve (Susd, Sbtc, Y), kyber, uinswap, 1inch and oasis in usd
+
+// Updates last 24 hr transaction volume of curve (Susd, Sbtc, Y), kyber, uinswap, 1inch and oasis in usd and eth
 async function updateTxVolumes() {
     try {
         const [ curveSusd, curveSbtc, curveY, 
@@ -37,9 +44,10 @@ async function updateTxVolumes() {
                                                                         getOasisTransactVol(),  
                                                                     ]);
         if(curveSUsd==null || curveSbtc==null ||curveY==null || kyber==null || uniswap==null || oneInch==null || oasis==null)
-        return;
+            return;
         const updates = { curveSusd, curveSbtc, curveY, kyber, uniswap, oneInch, oasis };
-        await TxVolume.findByIdAndUpdate(process.env.TX_VOL_OBJ_ID,updates, {new:true, upsert:true});
+        await TxVolume.findByIdAndUpdate(TX_VOL_OBJ_ID,updates, {new:true, upsert:true});
+        console.log(TX_VOL_OBJ_ID+' Done');
     }
     catch(err) {
         console.log(err);
@@ -100,8 +108,10 @@ async function getCurveSUSDTransactVol() {
                 }
             }
         }
-        // console.log('Curve Susd: '+volumeInUSD);
-        return volumeInUSD;
+        const ethPriceInUSD = tokenPricesInUSD['0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'] ? tokenPricesInUSD['0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'] : await getEthPriceInUSD();
+        const volumeInEth=volumeInUSD/ethPriceInUSD;
+        // console.log({usd:volumeInUSD, eth:volumeInEth});
+        return { usd: volumeInUSD, eth: volumeInEth };
     }
     catch(err) {
         console.log(err);
@@ -140,8 +150,10 @@ async function getCurveSBTCTransactVol() {
                 }
             }
         }
-        // console.log('Curve SBTC :'+volumeInUSD);
-        return volumeInUSD;
+        const ethPriceInUSD = tokenPricesInUSD['0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'] ? tokenPricesInUSD['0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'] : await getEthPriceInUSD();
+        const volumeInEth=volumeInUSD/ethPriceInUSD;
+        // console.log({usd:volumeInUSD, eth:volumeInEth});
+        return { usd: volumeInUSD, eth: volumeInEth };
     }
     catch(err) {
         console.log(err);
@@ -181,8 +193,10 @@ async function getCurveYTransactVol() {
                 }
             }
         }
-        // console.log('Curve Y: '+volumeInUSD);
-        return volumeInUSD;
+        const ethPriceInUSD = tokenPricesInUSD['0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'] ? tokenPricesInUSD['0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'] : await getEthPriceInUSD();
+        const volumeInEth=volumeInUSD/ethPriceInUSD;
+        // console.log({usd:volumeInUSD, eth:volumeInEth});
+        return { usd: volumeInUSD, eth: volumeInEth };
     }
     catch(err) {
         console.log(err);
@@ -219,8 +233,10 @@ async function getKyberTransactVol() {
                 }
             }
         }
-        // console.log('Kyber :'+volumeInUSD);
-        return volumeInUSD;
+        const ethPriceInUSD = tokenPricesInUSD['0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'] ? tokenPricesInUSD['0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'] : await getEthPriceInUSD();
+        const volumeInEth=volumeInUSD/ethPriceInUSD;
+        // console.log({usd:volumeInUSD, eth:volumeInEth});
+        return { usd: volumeInUSD, eth: volumeInEth };
         
     }
     catch(err) {
@@ -260,8 +276,10 @@ async function getUniswapTransactVol() {
                 }
             }
         }
-        // console.log('Uniswap: '+volumeInUSD);
-        return volumeInUSD;
+        const ethPriceInUSD = tokenPricesInUSD['0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'] ? tokenPricesInUSD['0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'] : await getEthPriceInUSD();
+        const volumeInEth=volumeInUSD/ethPriceInUSD;
+        // console.log({usd:volumeInUSD, eth:volumeInEth});
+        return { usd: volumeInUSD, eth: volumeInEth };
     }
     catch(err) {
         console.log(err);
@@ -304,8 +322,10 @@ async function getOneInchTransactVol() {
                 }
             }
         }
-        // console.log('One Inch: '+volumeInUSD);
-        return volumeInUSD;
+        const ethPriceInUSD = tokenPricesInUSD['0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'] ? tokenPricesInUSD['0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'] : await getEthPriceInUSD();
+        const volumeInEth=volumeInUSD/ethPriceInUSD;
+        // console.log({usd:volumeInUSD, eth:volumeInEth});
+        return { usd: volumeInUSD, eth: volumeInEth };
     }
     catch(err) {
         console.log(err);
@@ -341,8 +361,10 @@ async function getOasisTransactVol() {
                 }
             }
         }
-        // console.log('Oasis: '+volumeInUSD);
-        return volumeInUSD;
+        const ethPriceInUSD = tokenPricesInUSD['0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'] ? tokenPricesInUSD['0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'] : await getEthPriceInUSD();
+        const volumeInEth=volumeInUSD/ethPriceInUSD;
+        // console.log({usd:volumeInUSD, eth:volumeInEth});
+        return { usd: volumeInUSD, eth: volumeInEth };
     }
     catch(err) {
         console.log(err);

@@ -1,10 +1,11 @@
-require('dotenv').config();
 const Web3 = require('web3');
 const { instaIndexContract } = require('../contracts/instaDappContracts');
 const CreationCount = require('../models/creationCount');
+const { WEB3_PROVIDER_URL, CREATION_COUNT_OBJ_ID } = require('../config');
 
-const web3 = new Web3(new Web3.providers.HttpProvider(process.env.WEB3_PROVIDER_URL));
-// const web3 = new Web3(new Web3.providers.WebsocketProvider(process.env.WEB3_PROVIDER_URL));
+
+const web3 = new Web3(new Web3.providers.HttpProvider(WEB3_PROVIDER_URL));
+// InstaDApp Creation Event Contract
 const instaIndex = new web3.eth.Contract(instaIndexContract.abi, instaIndexContract.address);
 
 
@@ -25,7 +26,7 @@ Format:
 async function updateDsaCreationCount() {
     try {
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        const { data,  lastScannedBlock } = await CreationCount.findById(process.env.CREATION_COUNT_OBJ_ID);
+        const { data,  lastScannedBlock } = await CreationCount.findById(CREATION_COUNT_OBJ_ID);
         const accCreatedCount = JSON.parse(data);
         let startBlock = lastScannedBlock+1;
         const latest = await web3.eth.getBlockNumber();
@@ -58,7 +59,7 @@ async function updateDsaCreationCount() {
             }
         }
         const countStr =  JSON.stringify(accCreatedCount);
-        await CreationCount.findByIdAndUpdate( process.env.CREATION_COUNT_OBJ_ID, {data:countStr, lastScannedBlock:latest}, {new:true, upsert:true});
+        await CreationCount.findByIdAndUpdate( CREATION_COUNT_OBJ_ID, {data:countStr, lastScannedBlock:latest}, {new:true, upsert:true});
         // console.log(result);
     }
     catch(err) {
