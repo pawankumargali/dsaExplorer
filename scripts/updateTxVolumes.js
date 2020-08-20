@@ -180,7 +180,7 @@ async function getCurveYTransactVol() {
                 const id = await instaList.methods.accountID(buyer).call();
                 if(id!=0) {
                     if(!tokenAddresses[sold_id]) 
-                        tokenAddresses[sold_id] = await curveSBtc.methods.coins(sold_id).call();
+                        tokenAddresses[sold_id] = await curveY.methods.coins(sold_id).call();
                     const sold_token = tokenAddresses[sold_id];
                     if(!tokenPricesInUSD[sold_token]) {
                         if(sold_token==='0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE')
