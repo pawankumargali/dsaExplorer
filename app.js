@@ -5,7 +5,8 @@ const cors = require('cors');
 const dbConnect = require('./dbConnect');
 const updateDsaCreationCount = require('./scripts/updateDsaCreationCount');
 const updateTxVolumes = require('./scripts/updateTxVolumes');
-const { PORT, DB_URL } = require('./config');
+const { updateLatestTxs, deleteOlderTxs } = require('./scripts/updateRecentTxs');
+const { PORT, DB_URL, DB_TX_COUNT_LIMIT } = require('./config');
 
 // SERVER SETUP
 const app = express();
@@ -29,11 +30,27 @@ app.use(cors());
 
 // APP ROUTES MIDDLEWARE
 const dsaRouter = require('./routes/dsa');
-app.use('/api', dsaRouter);
+const updateRecentTxs = require('./scripts/updateRecentTxs');
+app.use('/api/dsa', dsaRouter);
 
 
-// Updates 24hr Transaction Vol through Dexes every 30 mins
-const txVolTimeInterval = 1000*60*30;
+
+// DATABASE UPDATERS
+
+// Updates Recent Transactions every 10mins
+const recentTxTimeInterval=1000*60*5;
+setInterval(async () => {
+    try {
+        await updateLatestTxs(DB_TX_COUNT_LIMIT);
+        await deleteOlderTxs(DB_TX_COUNT_LIMIT);
+    }
+    catch(err) {
+        console.log(err);
+    }
+}, recentTxTimeInterval);
+
+// Updates 24hr Transaction Vol through Dexes every 2 hours
+const txVolTimeInterval = 1000*60*60*1;
 setInterval(async () => {
     try {
         await updateTxVolumes();
@@ -43,8 +60,8 @@ setInterval(async () => {
     }
 }, txVolTimeInterval);
 
-// Updates DSA Creation Count every 1 hour
-const creationCountTimeInterval = 1000*60*60;
+// Updates DSA Creation Count every 6 hours
+const creationCountTimeInterval = 1000*60*60*6;
 setInterval(async () => {
     try {
         await updateDsaCreationCount();

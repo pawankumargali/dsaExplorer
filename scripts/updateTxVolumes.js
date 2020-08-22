@@ -1,4 +1,3 @@
-require('dotenv').config;
 const Web3 = require('web3');
 const { instaListContract, instaEventContract }= require('../contracts/instaDappContracts');
 const oasisDexContract = require('../contracts/oasisDexContract');
@@ -47,14 +46,16 @@ async function updateTxVolumes() {
             return;
         const updates = { curveSusd, curveSbtc, curveY, kyber, uniswap, oneInch, oasis };
         await TxVolume.findByIdAndUpdate(TX_VOL_OBJ_ID,updates, {new:true, upsert:true});
-        console.log(TX_VOL_OBJ_ID+' Done');
+        // console.log(updates);
     }
     catch(err) {
         console.log(err);
     }
 }
 
+
 module.exports = updateTxVolumes;
+
 
 const tokenDecimals = {
     "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48": 6,
@@ -160,7 +161,6 @@ async function getCurveSBTCTransactVol() {
     }
 }
 
-
 // Gets Curve y Transaction Volume (in USD) in Past 24 hrs from Past Events
 async function getCurveYTransactVol() {
     try {
@@ -180,7 +180,7 @@ async function getCurveYTransactVol() {
                 const id = await instaList.methods.accountID(buyer).call();
                 if(id!=0) {
                     if(!tokenAddresses[sold_id]) 
-                        tokenAddresses[sold_id] = await curveY.methods.coins(sold_id).call();
+                        tokenAddresses[sold_id] = await curveY.methods.underlying_coins(sold_id).call();
                     const sold_token = tokenAddresses[sold_id];
                     if(!tokenPricesInUSD[sold_token]) {
                         if(sold_token==='0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE')
@@ -332,7 +332,7 @@ async function getOneInchTransactVol() {
     }
 }
 
-// Gets Oasis Transaction Volume (in USD) in Past 24 hrs from Past Events
+// Gets Oasis Transaction Volume in Past 24 hrs from Past Events
 async function getOasisTransactVol() {
     try {
         let volumeInUSD=0;

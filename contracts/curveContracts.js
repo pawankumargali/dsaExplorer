@@ -2642,6 +2642,4 @@ curveYContract.abi = [
     }
 ];
 
-exports.curveSUsdContract = curveSUsdContract;
-exports.curveSBtcContract = curveSBtcContract;
-exports.curveYContract = curveYContract;
+module.exports = { curveSUsdContract, curveSBtcContract, curveYContract }
