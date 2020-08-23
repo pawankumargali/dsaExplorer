@@ -9,13 +9,10 @@ app.use(express.static(path.join(__dirname, 'build')));
 // need to declare a "catch all" route on your express server
 // that captures all page requests and directs them to the client
 // the react-router do the route part
-// app.get('*', function(req, res) {
-//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
-// });
+app.get('*', function(req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
-app.get("*", (req, res) => {
-    res.sendFile('index.html', { root });
-})
 app.listen(process.env.PORT || 5000, function() {
   console.log(`Frontend start on http://localhost:5000`);
 });
