@@ -1,0 +1,104 @@
+// 
+// 
+// user.scss
+//
+// Place your own theme CSS or SCSS rules below this line, these rules will override any Bootstrap and theme variables.
+
+/* NAV BAR */
+.search-box .search-input {
+      width: 35vw;
+      padding-left: 2.5rem;
+}
+
+@media(max-width: 575px) {
+    .search-box .search-input {
+        width:100%;
+    }
+}
+
+/* DSA CREATION TIMELINE */
+#creation-count-div {
+    margin:15px 20px 0px auto;
+    font-size: 1rem;
+}
+.creation-interval-select-btn  {
+    box-sizing:border-box;
+    padding-top:0;
+    padding-bottom:0;
+}
+
+@media(max-width: 575px) {
+    
+    #creation-count-heading {
+        text-align: center;
+        font-size: 1.2rem;
+    }
+
+    #creation-count-div { font-size:0.9rem; }
+    
+}
+
+/* 24hr Transaction Volume - TOTAL */
+#total-tx-vol-chart {
+    position: absolute;
+    bottom:25px;
+    right:5px;
+    height:90px;
+}
+
+@media(max-width: 779px) {
+    #total-tx-vol-card { height:170px; }
+}
+
+
+/* 24hr Transaction Volume - BREAKUP */
+#tx-vol-breakup-chart-col {
+    position: absolute;
+    right:20px;
+    bottom: 20px;
+}
+
+#tx-vol-breakup-item { min-width:500px; }
+
+@media(max-width: 1126px) {
+    #tx-vol-breakup-item { min-width:400px; }
+}
+
+@media (max-width:1029px) {
+    #tx-vol-breakup-item { min-width:350px; }
+}
+
+@media (max-width:972px ) {
+    #tx-vol-breakup-item { min-width:300px; }
+}
+
+@media(max-width: 881px){
+    #tx-vol-breakup-item { min-width:250px; }
+}
+
+@media(max-width: 778px){
+    #tx-vol-breakup-item { min-width:450px; }
+}
+
+@media(max-width: 672px){
+    #tx-vol-breakup-item { min-width:350px; }
+}
+
+@media(max-width: 577px){
+    #tx-vol-breakup-item { min-width:200px; }
+}
+
+@media(max-width: 482px) {
+    #tx-vol-breakup-item { min-width:150px; }
+}
+
+
+/* RECENT TRANSACTIONS TABLE */
+.pagination-page-num-btn {
+    margin-left:10px;
+    border:none;
+    outline:none; 
+    background-color:inherit; 
+    color:#2C7BE5;
+    font-size:.83333rem;
+}
