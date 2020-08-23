@@ -138,7 +138,7 @@ const TotalSales = ({ className }) => {
   const updateCreationCounts = async () => {
     try {
       // Before deploying store key and url in env variables
-      const creationCountUrl = 'http://dsa-info.herokuapp.com/api/dsa/creation/counts?key=Er2wUbHQ8hYADskWFk9JQntnf';
+      const creationCountUrl = 'https://dsa-info.herokuapp.com/api/dsa/creation/counts?key=Er2wUbHQ8hYADskWFk9JQntnf';
       const [countsResponse, totalCount]  = await Promise.all([axios.get(creationCountUrl),getGlobalDsaCount()]);
       const { data } = countsResponse.data;
       setCounts(data);

@@ -103,7 +103,7 @@ const WeeklySales = () => {
   const getTxVolData = async () => {
     try {
       if(Object.keys(txVolData).length===0) {
-        const txVolUrl = 'http://dsa-info.herokuapp.com/api/dsa/tx/volume?key=Er2wUbHQ8hYADskWFk9JQntnf';
+        const txVolUrl = 'https://dsa-info.herokuapp.com/api/dsa/tx/volume?key=Er2wUbHQ8hYADskWFk9JQntnf';
         const response = await axios.get(txVolUrl);
         const { data } = response.data;
         setTxVolData(data);
