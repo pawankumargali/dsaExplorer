@@ -69,7 +69,7 @@
     "node": "12.14.1",
     "npm": "6.13.6"
   },
-  "homepage": "/build",
+  "homepage": "https://dsaexplorerv1.herokuapp.com/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
