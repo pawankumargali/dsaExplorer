@@ -50,7 +50,7 @@ setInterval(async () => {
 }, recentTxTimeInterval);
 
 // Updates 24hr Transaction Vol through Dexes every 2 hours
-const txVolTimeInterval = 1000*60*60*1;
+const txVolTimeInterval = 1000*60*60*30;
 setInterval(async () => {
     try {
         await updateTxVolumes();
@@ -61,7 +61,7 @@ setInterval(async () => {
 }, txVolTimeInterval);
 
 // Updates DSA Creation Count every 6 hours
-const creationCountTimeInterval = 1000*60*60*6;
+const creationCountTimeInterval = 1000*60*60*2;
 setInterval(async () => {
     try {
         await updateDsaCreationCount();
