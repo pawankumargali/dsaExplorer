@@ -1,9 +1,13 @@
 const mongoose = require('mongoose');
 
-const recentTxSchema = new mongoose.Schema({
+const txSchema = new mongoose.Schema({
     hash: {
         type: String,
         required: true
+    },
+    dsaId: {
+        type:Number,
+        required:true
     },
     from: {
         type: String,
@@ -27,9 +31,9 @@ const recentTxSchema = new mongoose.Schema({
     }
 });
 
-recentTxSchema.index({blockNumber:-1, timestamp:1});
+txSchema.index({dsaId:1, timestamp:-1});
 
-const RecentTx = mongoose.model('RecentTx', recentTxSchema);
+const Tx = mongoose.model('Tx', txSchema);
 
 
-module.exports = RecentTx;
+module.exports = Tx;
