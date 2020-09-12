@@ -7,17 +7,13 @@ const instaEvent = new web3.eth.Contract(instaEventContract.abi, instaEventContr
 
 const Tx = require('../models/Tx');
 
-// console.log(WEB3_PROVIDER_URL);
-
 // Function to update Transactions in DSA
 async function updateTxs() {
     try {
         const txInfo=[];
         const isTxCovered = {};
         const latest = await web3.eth.getBlockNumber();
-        let startBlock=9700000;
-        // let { blockNumber: latest } = await Tx.findOne({}).sort({blockNumber: 1});
-        // console.log(latest);
+        let { blockNumber: startBlock } = await Tx.findOne({}).sort({blockNumber: -1});
         while(startBlock<=latest) {
             console.log(startBlock);
             const result = await instaEvent.getPastEvents('LogEvent', { fromBlock:startBlock, toBlock: startBlock+10000});
@@ -31,8 +27,7 @@ async function updateTxs() {
             }
             startBlock+= (startBlock+10000>latest) ? (latest) : (10000);
         }
-        console.log(txInfo.length);
-
+        // console.log(txInfo.length);
         while(txInfo.length!==0) {
             const {hash, dsaId} = txInfo.pop();
             const doc = await Tx.findOne({hash});
@@ -41,31 +36,17 @@ async function updateTxs() {
                 if(receipt && receipt.status) {
                     const { from, to, gasUsed:gas, blockNumber, blockHash } = receipt;
                     const { timestamp } = await web3.eth.getBlock(blockHash); 
-                    await Tx.create({hash, dsaId, from, to, gas, blockNumber, timestamp}) 
-                    // const newTx = new Tx({hash, from, to, gas, blockNumber, timestamp});
-                    // await newTx.save();
-                    // console.log(newTx);
-                    }
+                    const newTx = new Tx({hash, dsaId, from, to, gas, blockNumber, timestamp});
+                    await newTx.save();
+                    // console.log(timestamp);
+                }
             }
         }
-        console.log('Done');
+        // console.log('Done');
     }
     catch(err) {
         console.log(err);
     }
 }
 
-
-// async function deleteOlderTxs(TxCountLimitInDB) {
-//     const count = await RecentTx.countDocuments();
-//     const delCount=count-TxCountLimitInDB;
-//     if(delCount<=0) return;
-//     const docs = await RecentTx.find({}).sort({ timestamp: 1}).limit(delCount);
-//     const idsToDel = [];
-//     for(const doc of docs) {
-//         idsToDel.push(doc._id);
-//     }
-//     await RecentTx.deleteMany({ _id: { $in: idsToDel } });
-// }
-
-  module.exports = updateTxs;
+module.exports = updateTxs;

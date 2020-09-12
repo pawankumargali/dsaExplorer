@@ -30,44 +30,39 @@ app.use(cors());
 
 // APP ROUTES MIDDLEWARE
 const dsaRouter = require('./routes/dsa');
-// const updateTxs = require('./scripts/updateTxs');
 app.use('/api/dsa', dsaRouter);
 
+// DATABASE UPDATERS
 
-// updateTxs();
+// Updates Recent Transactions every 10mins
+const TxUpdateTimeInterval=1000*60*5;
+setInterval(async () => {
+    try {
+        await updateTxs();
+    }
+    catch(err) {
+        console.log(err);
+    }
+}, TxUpdateTimeInterval);
 
+// Updates 24hr Transaction Vol through Dexes every 2 hours
+const txVolTimeInterval = 1000*60*60*30;
+setInterval(async () => {
+    try {
+        await updateTxVolumes();
+    }
+    catch(err) {
+        console.log(err);
+    }
+}, txVolTimeInterval);
 
-// // DATABASE UPDATERS
-
-// // Updates Recent Transactions every 10mins
-// const TxUpdateTimeInterval=1000*60*5;
-// setInterval(async () => {
-//     try {
-//         await updateTxs();
-//     }
-//     catch(err) {
-//         console.log(err);
-//     }
-// }, TxUpdateTimeInterval);
-
-// // Updates 24hr Transaction Vol through Dexes every 2 hours
-// const txVolTimeInterval = 1000*60*60*30;
-// setInterval(async () => {
-//     try {
-//         await updateTxVolumes();
-//     }
-//     catch(err) {
-//         console.log(err);
-//     }
-// }, txVolTimeInterval);
-
-// // Updates DSA Creation Count every 6 hours
-// const creationCountTimeInterval = 1000*60*60*2;
-// setInterval(async () => {
-//     try {
-//         await updateDsaCreationCount();
-//     }
-//     catch(err) {
-//         console.log(err);
-//     }
-// }, creationCountTimeInterval); 
+// Updates DSA Creation Count every 6 hours
+const creationCountTimeInterval = 1000*60*60*2;
+setInterval(async () => {
+    try {
+        await updateDsaCreationCount();
+    }
+    catch(err) {
+        console.log(err);
+    }
+}, creationCountTimeInterval); 
