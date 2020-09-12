@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 const Dot = ({ color, className, ...rest }) => (
-  <span className={classNames('dot', { [`bg-${color}`]: !!color }, className)} {...rest} />
+  <span style={{backgroundColor:color}} className={classNames('dot', { [`bg-${color}`]: !!color }, className)} {...rest} />
 );
 
 Dot.propTypes = {

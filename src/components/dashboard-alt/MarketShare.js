@@ -55,6 +55,7 @@ const MarketShare = ( ) => {
   const { txVolData, IsTxVolDataReceived } = useContext(TxVolDataContext);
   const colors = ['#2c7be5','#27bcfd', '#39F3BB', '#999','#d8e2ef'];
 
+
   const [values, setValues] = useState([]);
   const [areValsSet, setAreValsSet] = useState(false);
   const [total, setTotal] = useState({usd:0, eth:0});
@@ -88,8 +89,9 @@ const MarketShare = ( ) => {
         val.color = colors[colorIndex];
         colorIndex+=1;
       }
-
+      // console.log(vals);
       setValues(vals);
+      console.log(vals);
       setAreValsSet(true);
       const total = {usd: totalUSD, eth: totalEth};
       setTotal(total);
@@ -126,7 +128,7 @@ const MarketShare = ( ) => {
                 style={{ width: '6.625rem', height: '6.625rem'}}
               />
               <div className="absolute-centered font-weight-medium text-dark fs-2">
-                {currency + numberFormatter(total.usd, 0)}
+                {currency + numberFormatter(total.usd, 2)}
               </div>
             </div>
           </Col>

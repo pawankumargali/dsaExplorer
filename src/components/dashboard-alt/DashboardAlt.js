@@ -10,6 +10,7 @@ import PurchasesTable from './PurchasesTable';
 import RecentPurchasesTable from './RecentPuchasesTable';
 import Flex from '../common/Flex';
 import TxVolDataProvider from './TxVolDataProvider';
+import RecentTxs from  './RecentTxs';
 
 const DashboardAlt = () => {
   return (
@@ -31,9 +32,10 @@ const DashboardAlt = () => {
         </Col>
       </TxVolDataProvider>
       </Row>
+
       <Row noGutters>
         <Col lg={12} className="my-2 pl-md-2 pr-md-2">
-          <RecentPurchasesTable />
+          <RecentTxs  isPreview={true}/>
         </Col>
       </Row>
 

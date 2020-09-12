@@ -1,32 +1,24 @@
 import React, { Fragment, createRef, useState, useEffect, useContext } from 'react';
 import paginationFactory, { PaginationProvider } from 'react-bootstrap-table2-paginator';
-import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
-import 'react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css';
 import BootstrapTable from 'react-bootstrap-table-next';
 import Badge from 'reactstrap/es/Badge';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Col, Row } from 'reactstrap';
 import ButtonIcon from '../common/ButtonIcon';
-import { Link, Redirect } from 'react-router-dom';
-import purchases from '../../data/dashboard/purchaseList';
 import { isIterableArray } from '../../helpers/utils';
 import { themeColors } from '../../helpers/utils';
 import AppContext, { RecentTxsDataContext } from '../../context/Context';
-
-
-
 import axios from 'axios';
 import ethIcon from '../../assets/img/tokens/eth.svg';
-import { Path } from 'leaflet';
 
-const CustomTotal = ({ sizePerPage, totalSize, page, lastIndex }) => (
-  <span>
-    {(page - 1) * sizePerPage + 1} to {lastIndex > totalSize ? totalSize : lastIndex} of {totalSize} 
-  </span>
-);
-
-
-
+const CustomTotal = ({ sizePerPage, totalSize, page, lastIndex }) =>  {
+  if(totalSize===0) 
+    return (<span>
+            No matches
+          </span>);
+  return (<span>
+          {(page - 1) * sizePerPage + 1} to {lastIndex > totalSize ? totalSize : lastIndex} of {totalSize} 
+        </span>);
+}
 
 const txHashFormatter = txHash => (
   <a href={`https://etherscan.io/tx/${txHash}`} 
@@ -98,11 +90,17 @@ const gasFormatter = gasAmt => {
   const divFactor = Math.pow(10,9);
   const gasInEth = gasAmt/divFactor;
   return (
-    <Fragment>
-      <img src={ethIcon} alt="eth-icon" style={{width:'18px', padding:'3px'}} />
-      <span style={{marginLeft:'5px', lineHeight:'25px'}}>{gasInEth}</span>
-    </Fragment>
+      <span style={{lineHeight:'25px'}}>{gasInEth}</span>
   );
+}
+
+const gasHeaderFormatter = () => {
+  return (
+    <Fragment>
+      <span style={{marginRight:'5px'}}>Gas</span>
+      <img src={ethIcon} alt="eth-icon" style={{width:'20px', padding:'3px'}} />
+    </Fragment>
+  )
 }
 
 const columns = [
@@ -112,7 +110,10 @@ const columns = [
     formatter: txHashFormatter,
     classes: 'border-0 align-middle',
     headerClasses: 'border-0',
-    sort: false
+    sort: false,
+    // filter:textFilter({
+    //   placeholder: columnFilterPlaceHolder()
+    // })
   },
   {
     dataField: 'blockNumber',
@@ -150,7 +151,8 @@ const columns = [
   },
   {
     dataField: 'gas',
-    text: 'Gas',
+    text: `Gas <img src=${ethIcon} alt="eth-icon"/>`,
+    headerFormatter: gasHeaderFormatter,
     formatter: gasFormatter,
     classes: 'border-0 align-middle',
     headerClasses: 'border-0',
@@ -158,40 +160,72 @@ const columns = [
   }
 ];
 
-const PurchasesTable = ({ pageSize, pageNums, totalSize, isAllRecentTxsPage }) => {
+const PurchasesTable = ({ pageSize, pageNums, totalSize, isAllRecentTxsPage, txSearchText, setPageSize, setTotalSize }) => {
 
 
   const { isDark } = useContext(AppContext);
+  // stores all txs fetched from api
   const { txs, setTxs, areTxsReceived, setAreTxsReceived } = useContext(RecentTxsDataContext);
+  // stores txs to be displayed based of search filter text
+  const [displayTxs, setDisplayTxs] = useState(txs);
+  // keeps track of the current page in pagination
   const [currentPage, setCurrentPage] = useState(1);
+  // Pagination options
+  const [options, setOptions] = useState({custom:true, sizePerPage:pageSize, totalSize});
+  // show numbered pages when search filter is not triggered
+  const [showNumberedPages, setShowNumberedPages] = useState(true);
 
-  const options = 
-    {custom:true, 
-      sizePerPage:pageSize, 
-      totalSize
-    };
-
+  // updates showNumberedPages based on search filter text
   useEffect(() => {
-    options.sizePerPage = pageSize;
-  }, [options.sizePerPage, pageSize]);
+    if(txSearchText==="") setShowNumberedPages(true);
+    else setShowNumberedPages(false);
+  },[txSearchText])
 
-  const updateRecentTxs = async () => {
+  // fetches data from api and updates txs
+  const updateTxs = async () => {
     try {
       const recentTxUrl = 'https://dsa-info.herokuapp.com/api/dsa/tx/recent?key=Er2wUbHQ8hYADskWFk9JQntnf'
       const response = await axios.get(recentTxUrl);
       const { data } = response.data;
       setTxs(data);
+      setDisplayTxs(data);
       setAreTxsReceived(true);
     }
     catch(err) {
       console.log(err);
     }
   }
-
   useEffect(() => {
     if(txs.length===0)
-      updateRecentTxs();
-  },[areTxsReceived])
+      updateTxs();
+  },[areTxsReceived]);
+
+  // updates the txs to be displayed based on search filter text
+  const updateDisplayTxs = () => {
+      if(txSearchText==="") {
+        setDisplayTxs(txs);
+        setTotalSize(txs.length);
+      }
+      else {
+        const txsToDisplay=[];
+        for(const tx of txs) {
+          let { hash, from, to } = tx;
+          hash=hash.toLowerCase();
+          from=from.toLowerCase();
+          to=to.toLowerCase();
+          const searchText=txSearchText.toLowerCase();
+          if(hash.includes(searchText) || from.includes(searchText) || to.includes(searchText))
+            txsToDisplay.push(tx);
+        }
+        setDisplayTxs(txsToDisplay);
+        setTotalSize(txsToDisplay.length);
+      }
+      const options = {custom:true, sizePerPage:pageSize, totalSize};
+      setOptions(options);
+  };
+  useEffect(() => {
+    updateDisplayTxs();
+  }, [areTxsReceived, txSearchText, pageSize, totalSize]);
 
 
   let table = createRef();
@@ -212,14 +246,6 @@ const PurchasesTable = ({ pageSize, pageNums, totalSize, isAllRecentTxsPage }) =
     setCurrentPage(page);
   }
 
-  // const handleViewAll = ({ onSizePerPageChange }, newSizePerPage) => {
-  //   onSizePerPageChange(newSizePerPage, 1);
-  // };
-
-  // const handleExplore = () => {
-  //     return <Redirect to='/txs'></Redirect>
-  // } 
-
 
   return (
     <PaginationProvider pagination={paginationFactory(options)}>
@@ -233,10 +259,8 @@ const PurchasesTable = ({ pageSize, pageNums, totalSize, isAllRecentTxsPage }) =
                 ref={table}
                 bootstrap4
                 keyField="_id"
-                data={txs}
+                data={displayTxs}
                 columns={columns}
-                filter={isAllRecentTxsPage ? filterFactory() : null}
-                // selectRow={selectRow(onSelect)}
                 bordered={false}
                 classes="table-dashboard table-sm fs--1 border-bottom border-200 mb-0 table-dashboard-th-nowrap"
                 rowClasses="btn-reveal-trigger border-top border-200"
@@ -247,22 +271,6 @@ const PurchasesTable = ({ pageSize, pageNums, totalSize, isAllRecentTxsPage }) =
             <Row noGutters className="px-1 py-3">
               <Col className="pl-3 fs--1">
                 <CustomTotal {...paginationProps} lastIndex={lastIndex} />
-                {!isAllRecentTxsPage &&
-                (<Fragment>
-                    <span> — {' '}</span>
-                    <Link to='/txs'>
-                      <ButtonIcon
-                      color="link"
-                      size="sm"
-                      icon="chevron-right"
-                      iconAlign="right"
-                      transform="down-1 shrink-4"
-                      className="px-0 font-weight-semi-bold"
-                      >
-                      Explore
-                      </ButtonIcon>
-                    </Link>
-                </Fragment>)}
               </Col>
               <Col xs="auto" className="pr-3">
                 <ButtonIcon
@@ -276,7 +284,7 @@ const PurchasesTable = ({ pageSize, pageNums, totalSize, isAllRecentTxsPage }) =
                 >
                   
                 </ButtonIcon>
-                {isIterableArray(pageNums) && pageNums.map(page =>
+                {showNumberedPages && isIterableArray(pageNums) && pageNums.map(page => 
                   <Button
                     key={page}
                     color={isDark ? themeColors.light : themeColors.primary}

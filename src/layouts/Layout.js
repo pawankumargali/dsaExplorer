@@ -9,14 +9,12 @@ import ErrorLayout from './ErrorLayout';
 import loadable from '@loadable/component';
 
 const Layout = () => {
-  useEffect(() => {
-   
-  }, []);
-
+ 
   return (
     <Router fallback={<span />}>
       <Switch>
         <Route component={DashboardLayout} />
+        <Route path="/errors" component={ErrorLayout} />
       </Switch>
       <ToastContainer transition={Fade} closeButton={<CloseButton />} position={toast.POSITION.BOTTOM_LEFT} />
     </Router>
@@ -24,3 +22,4 @@ const Layout = () => {
 };
 
 export default Layout;
+  

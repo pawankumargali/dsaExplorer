@@ -3,7 +3,7 @@ import PurchasesTable from './PurchasesTable';
 import FalconCardHeader from '../common/FalconCardHeader';
 import { InputGroup, CustomInput, Button, Card, CardBody } from 'reactstrap';
 import ButtonIcon from '../common/ButtonIcon';
-import RecentTxsDataProvider from './RecentTxDataProvider';
+import RecentTxsDataProvider from './RecentTxsDataProvider';
 
 const RecentPurchasesTable = () => {
   const pageSize = 10;

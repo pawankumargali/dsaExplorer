@@ -13,7 +13,7 @@ import AppContext, { TxVolDataContext } from '../../context/Context';
 
 import axios from 'axios';
 import ethIcon from '../../assets/img/tokens/eth.svg';
-let param=0;
+
 const getFormatter= (params) => {
     let {name, value} = params[1]
     if(name==='oneInch') name='1inch';
@@ -97,8 +97,7 @@ const WeeklySales = () => {
   const [totalEth, setTotalEth] = useState(0);
   const [areValsSet, setAreValsSet] = useState(false);
   // Max value of data
-  const yMax = Math.max(...yValues);
-  const dataBackground = yValues.map(() => yMax);
+  const [dataBackground, setDataBackground] = useState([]);
 
   const getTxVolData = async () => {
     try {
@@ -135,11 +134,21 @@ const WeeklySales = () => {
       }
       const xVals = Object.keys(data).sort((key1, key2) => data[key2]-data[key1]);
       const yVals=[];
+      const colors = ['#2c7be5','#27bcfd', '#39F3BB', '#999','#d8e2ef'];
+      let colorIndex=0;
       for(const dex of xVals) {
-        yVals.push(data[dex]);
+        yVals.push({value:data[dex], itemStyle:{color:colors[colorIndex]} });
+        colorIndex+=1;
       }
+      const valuesArray=[];
+      for(const val of yVals) {
+        valuesArray.push(val.value);
+      }
+      const yMax = Math.max(...valuesArray);
+      const background = valuesArray.map(() => yMax);
       setXValues(xVals);
       setYValues(yVals);
+      setDataBackground(background);
       setTotalUSD(totalUSD);
       setTotalEth(totalEth);
       setAreValsSet(true);

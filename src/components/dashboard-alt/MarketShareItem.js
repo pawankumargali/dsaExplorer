@@ -21,11 +21,11 @@ const MarketShareItem = ({ color, name, usd, eth, totalUSD }) => {
       </div>
       <div className="d-none  d-sm-block d-xxl-none font-weight-semi-bold" style={inlineStyle}>
         <span className="font-weight-semi-bold">{currency}</span>
-        <span className="font-weight-semi-bold" style={{padding:'3px'}}>{numberFormatter(usd,0)}</span>
+        <span className="font-weight-semi-bold" style={{padding:'3px'}}>{numberFormatter(usd,2)}</span>
       </div>
       <div className="d-none d-sm-block d-md-none d-lg-block d-xxl-none font-weight-semi-bold" style={inlineStyle}>
         <img src={ethIcon} alt="eth-icon" style={{width:'18px', padding:'3px'}}/>
-        <span style={{padding:'3px'}}>{numberFormatter(eth,0)}</span>
+        <span style={{padding:'3px'}}>{numberFormatter(eth,2)}</span>
       </div>
     </Flex>
   );
