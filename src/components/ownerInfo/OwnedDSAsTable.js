@@ -23,7 +23,7 @@ const CustomTotal = ({ sizePerPage, totalSize, page, lastIndex }) =>  {
 
 const OwnedDSAsTable = ({ pageSize, totalSize, searchText, setTotalSize, ownerAddress, currentDsa, setCurrentDsa }) => {
 
-
+// dsaAddress===currentDsa ? {...dsaStyles,...activeDsaStyles} : 
   const { isDark } = useContext(AppContext);
   const [isCurrent, setIsCurrent] = useState(true);
 
@@ -32,7 +32,7 @@ const OwnedDSAsTable = ({ pageSize, totalSize, searchText, setTotalSize, ownerAd
   const addressFormatter = dsaAddress => (
     <div 
       onClick={() => setCurrentDsa(dsaAddress)}
-      style={dsaAddress===currentDsa ? {...dsaStyles,...activeDsaStyles} : {...dsaStyles}}
+      style={{...dsaStyles}}
       className="font-weight-semi-bold"
     > 
       {dsaAddress.substring(0,7)+'...'+dsaAddress.substring(dsaAddress.length-7)}
