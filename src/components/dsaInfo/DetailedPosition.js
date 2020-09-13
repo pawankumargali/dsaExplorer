@@ -1,38 +1,16 @@
 import React, { useContext, useState, useEffect, Fragment } from 'react';
-import PropTypes from 'prop-types';
-import FalconCardHeader from '../common/FalconCardHeader';
-import { Badge, Card, CardBody, Col, Row, Button, Collapse, CardFooter, CustomInput, InputGroup } from 'reactstrap';
-import Flex from '../common/Flex';
-import { numberFormatter, isIterableArray, themeColors, getPosition, getGrays, colors } from '../../helpers/utils';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import AppContext, { SearchAddressContext, PositionsContext } from '../../context/Context';
-import { getCompoundPosition, getMakerPosition, getAavePosition, getDydxPosition } from '../../dsaInterface';
-import { getTokenPriceInUSD, getEthPriceInUSD, getSupportedTokenPricesInUSD } from '../../coinExPrices';
-import ReactEchartsCore from 'echarts-for-react/lib/core';
-import echarts from 'echarts/lib/echarts';
-import 'echarts/lib/chart/bar';
-import 'echarts/lib/component/tooltip';
-import ethIcon from '../../assets/img/tokens/eth.svg';
+import { Col, Row } from 'reactstrap';
+import { PositionsContext } from '../../context/Context';
+import { getTokenPriceInUSD, getEthPriceInUSD } from '../../coinExPrices';
 import tokens from '../../tokens';
-import OverallNetPosition from './OverallNetPosition';
-import NetPositionItem from './NetPositionItem';
-import StorageStatus from './SupplyBorrowStatus';
-import StorageStatusDot from './SupplyBorrowStatusDot';
-import MakerNetPositionItem from './MakerNetPositionItem';
-import PositionsDataProvider from './PositionsDataProvider';
-
-
-
 import Asset from './Asset';
 import Net from './Net';
-import Supply from './Supply';
-import Borrow from './Borrow';
 import Status from './Status';
 import MakerVault from './MakerVault';
 import TokenSupplyBorrowDetails from './TokenSupplyBorrowDetails';
-// import BorrowDetails from './BorrowDetails';
 
-const DetailedPosition = ({ dsaAddress, isPreview }) => {
+
+const DetailedPosition = ({ dsaAddress }) => {
 
   const {positions, arePositionsReceived, initPositions} = useContext(PositionsContext);
   const assets = ['maker','compound','aave','dydx'];
@@ -191,38 +169,22 @@ const DetailedPosition = ({ dsaAddress, isPreview }) => {
       }
     </Row>
 
-    {/* <h5 className="mt-3 pb-1 pl-md-3">Lend & Borrow Total</h5>
-    <Row noGutters lg={12} className="mb-1">
-    <Col lg={6} className="col-xxl-3 mb-1 pl-md-3 pr-md-0">
-        <Supply 
-          values={values}
-        />
-      </Col>
-      <Col lg={6} className="col-xxl-3 mb-1 pl-md-3 pr-md-0">
-        <Borrow 
-          values={values}
-        />
-      </Col>
-    </Row> */}
-    {values.supply.usd!==0 &&
-      <h5 className="mt-2 mb-1 pb-0 pl-md-2">Tokens</h5>
-    }
+    
      { areValsSet &&
      <Row noGutters className="mb-1"> 
-      <Col lg={12} className="col-xxl-3 mb-1 pl-md-2 pr-md-2 mx-auto">
-        <TokenSupplyBorrowDetails 
-          position={position}
-          currentAsset={currentAsset}
-          currentVault={currentMakerVault}
-        />
-      </Col>
-    </Row>}
+      <TokenSupplyBorrowDetails 
+        position={position}
+        currentAsset={currentAsset}
+        currentVault={currentMakerVault}
+        values={values}
+      />
+    </Row>
+    }
 
     </Fragment>
 
   );
 };
 
-// TotalOrder.propTypes = { data: PropTypes.array.isRequired };
 
 export default DetailedPosition;

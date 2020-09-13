@@ -115,17 +115,8 @@ const DsaInfo = ({ match, history }) =>  {
               </Col>
           </Row>
          
-          <Row noGutters lg={12} className="my-1">
-            <Col lg={2} className="col-xxl-3 mb-1 pl-md-2 pr-md-0">
-              {/* <Supply 
-                values={values}
-              /> */}
-              {/* <Owners dsaAddress={dsaAddress} /> */}
-            </Col>
-
+          <Row noGutters className="my-1">
             <Col lg={12} className="col-xxl-3 mb-1 pl-md-2 pr-md-0">
-            {/* <Owners dsaAddress={dsaAddress} /> */}
-
               <RecentDSATxs 
                 dsaAddress={dsaAddress}
               />

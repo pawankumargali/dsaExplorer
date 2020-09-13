@@ -4,14 +4,14 @@ import { Progress } from 'reactstrap';
 import { numberFormatter } from '../../helpers/utils';
 import classNames from 'classnames';
 
-const SupplyBorrowStatusProgressBar = ({ color, percentage, isLast, size, sizeInEth }) => (
+const SupplyBorrowStatusProgressBar = ({ color, percentage, isLast, size }) => (
   <Progress
     bar
     color={color}
     value={percentage}
     className={classNames({ 'border-right border-white border-2x': !isLast })}
   >
-    <span className="font-weight-semi-bold" style={{color:'#fff'}}>
+    <span className="font-weight-bold" style={{color:'#fff'}}>
       {'$'+numberFormatter(size,2)}
     </span>
   </Progress>

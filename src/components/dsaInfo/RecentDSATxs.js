@@ -4,8 +4,8 @@ import FalconCardHeader from '../common/FalconCardHeader';
 import { InputGroup, CustomInput, Button, Card, CardBody } from 'reactstrap';
 // import RecentTxsDataProvider from './RecentTxsDataProvider';
 // import RecentTxsDataProvider from './RecentTxsDataProvider';
-import ButtonIcon from '../common/ButtonIcon';
-import { Link } from 'react-router-dom';
+// import ButtonIcon from '../common/ButtonIcon';
+// import { Link } from 'react-router-dom';
 import SearchBox from '../dashboard-alt/SearchBox';
 
 

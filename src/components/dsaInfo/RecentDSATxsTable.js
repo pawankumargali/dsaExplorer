@@ -4,7 +4,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import Badge from 'reactstrap/es/Badge';
 import { Button, Col, Row } from 'reactstrap';
 import ButtonIcon from '../common/ButtonIcon';
-import { isIterableArray } from '../../helpers/utils';
+import { hashFormatter } from '../../helpers/utils';
 import { themeColors } from '../../helpers/utils';
 import AppContext, { RecentTxsDataContext } from '../../context/Context';
 import axios from 'axios';
@@ -26,7 +26,7 @@ const txHashFormatter = txHash => (
     target="_blank"
     rel="noopener noreferrer"
   > 
-    {txHash.substring(0,20)+'...'}
+    {hashFormatter(txHash,10)}
   </a>
 );
 
@@ -63,7 +63,7 @@ const fromAddressFormatter = address => (
     target="_blank"
     rel="noopener noreferrer"
   > 
-    {address.substring(0,20)+'...'}
+    {hashFormatter(address,10)}
   </a>
 );
 
@@ -80,7 +80,7 @@ const toAddressFormatter = address => {
       target="_blank"
       rel="noopener noreferrer"
     > 
-      {address.substring(0,20)+'...'}
+      {hashFormatter(address,10)}
     </a>
   )
 }

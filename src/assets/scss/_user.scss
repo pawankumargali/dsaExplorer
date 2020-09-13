@@ -159,12 +159,26 @@
 
 
 
-#bals-breakup-chart {
+#bals-breakup-chart, .supply-borrow-status-col {
     position: relative;
     top:-15px;
     right:0px;
 
 }
+
+@media(max-width: 576px) {
+    .supply-borrow-status-col {
+        top:12px;
+    }
+    .supply-borrow-progress-bar { 
+        width: 100% !important; 
+    }
+
+}
+
+// @media(max-width: 370px) {
+//     .supply-borrow-progress-bar { width: 100% !important; }
+// }
 
 .owner-address-item {
     margin: 10px auto;

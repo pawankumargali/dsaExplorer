@@ -26,6 +26,8 @@ const OwnerInfo = ({ match }) =>  {
   const { address: ownerAddress } = match.params;
 
   const [dsaAddress, setDsaAddress] = useState('');
+  // const [dsaId, setDsaId] = useState(0);
+  
   // const [isDsaChanged, setIsDsaChanged] = useState(false);
 
   // useEffect(() => {

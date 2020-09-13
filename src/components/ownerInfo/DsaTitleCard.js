@@ -4,15 +4,35 @@ import FalconCardHeader from '../common/FalconCardHeader';
 import { Badge, Card, CardBody, Col, Row, Button, Collapse, CardFooter } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import ButtonIcon from '../common/ButtonIcon';
+import {getDsaIdByAddress} from '../../dsaInterface';
 
 const DsaTitleCard = ({ dsaAddress }) => {
+
+  const [dsaId, setDsaId] = useState(0);
+  const _getDSAId = async() => {
+    const id = await getDsaIdByAddress(dsaAddress);
+    setDsaId(id);
+  }
+
+  useEffect(() => {
+    setDsaId(0);
+  },[dsaAddress]);
+
+  useEffect(() => {
+    if(dsaId===0)
+      _getDSAId();
+  },[dsaId])
 
   return (
     <Card>
       <FalconCardHeader title="Net Position" light={false} titleTag="h5"
         title={
         <Fragment>
-            DSA 
+             <span 
+              style={{ margin:'10px', color:'#fff', backgroundColor:'#2C7BE5', padding:'0px 10px', borderRadius:'5%'}}
+            >
+              DSA {dsaId}
+            </span> 
             <a 
             href={`https://etherscan.io/address/${dsaAddress}`}
             target="_blank"

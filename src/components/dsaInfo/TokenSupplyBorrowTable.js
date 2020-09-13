@@ -1,40 +1,34 @@
-import React, { Fragment, createRef, useState, useEffect, useContext } from 'react';
-import paginationFactory, { PaginationProvider } from 'react-bootstrap-table2-paginator';
+import React, { createRef  } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import Badge from 'reactstrap/es/Badge';
-import { Button, Col, Row } from 'reactstrap';
-import ButtonIcon from '../common/ButtonIcon';
-import { isIterableArray } from '../../helpers/utils';
-import { themeColors } from '../../helpers/utils';
-import AppContext, { BalancesDataContext } from '../../context/Context';
-import axios from 'axios';
-import { getBalances, getAuthorizedAddresses } from '../../dsaInterface';
+// import { Button, Col, Row } from 'reactstrap';
+// import ButtonIcon from '../common/ButtonIcon';
 import { numberFormatter } from '../../helpers/utils';
 import tokens from '../../tokens';
 import Flex from '../common/Flex';
 
 
-const tokenLabelFormatter = tokenLabel => {
-  const color = (tokenLabel==='Collateral' || tokenLabel==='Lent') ? 'soft-success' : 'soft-warning';
-   return(
-     <Badge color={color} className="fs--1 d-lg-block font-weight-semi-bold" style={{maxWidth:'100px'}}> 
-       {tokenLabel}
-     </Badge>
-   );
-};
+// const tokenLabelFormatter = tokenLabel => {
+//   const color = (tokenLabel==='Collateral' || tokenLabel==='Lent') ? 'soft-success' : 'soft-warning';
+//    return(
+//      <Badge color={color} className="fs--1 d-lg-block font-weight-semi-bold" style={{maxWidth:'100px'}}> 
+//        {tokenLabel}
+//      </Badge>
+//    );
+// };
 
 const tokenNameFormatter = token => (
-    <div>
-        <img src={tokens[token].icon} alt="eth-icon" style={{width:'20px', marginRight:'10px'}}/>
+    <Flex justify="center" align="center" style={{maxWidth:'150px'}}>
+        <img src={tokens[token].icon} alt={token} style={{width:'20px', marginRight:'10px'}}/>
         <span style={{lineHeight:'25px', fontWeight:'700', fontSize:'0.9rem'}}>{tokens[token].name}</span>
-    </div>
+    </Flex>
 )
 const tokenAmtFormatter = tokenAmt => (
-    <span style={{lineHeight:'25px', fontWeight:'700', fontSize:'0.9rem'}}>{tokenAmt < 0.001 ? numberFormatter(tokenAmt,6) : numberFormatter(tokenAmt,2)}</span>
+    <span style={{lineHeight:'25px', fontWeight:'700', fontSize:'0.9rem', maxWidth:'150px' }}>{tokenAmt < 0.001 ? numberFormatter(tokenAmt,6) : numberFormatter(tokenAmt,2)}</span>
 )
 
 const tokenAmtInUSDFormatter = tokenAmt => (
-    <span style={{lineHeight:'25px', fontWeight:'700', fontSize:'0.9rem'}}>{'$'+(tokenAmt < 0.001 ? numberFormatter(tokenAmt,6) : numberFormatter(tokenAmt,2)) }</span>
+    <span style={{lineHeight:'25px', fontWeight:'700', fontSize:'0.9rem', maxWidth:'150px'}}>{'$'+(tokenAmt < 0.001 ? numberFormatter(tokenAmt,6) : numberFormatter(tokenAmt,2)) }</span>
     
 
 )
@@ -50,15 +44,15 @@ const tokenRateFormatter = tokenRate => {
   };
 
 const columns = [
-    {
-      dataField: 'label',
-      text: 'Label',
-      headerAttrs: { hidden: true },
-      formatter: tokenLabelFormatter,
-      classes: 'border-0 align-middle',
-      headerClasses: 'border-0',
-      sort: false
-    },
+    // {
+    //   dataField: 'label',
+    //   text: 'Label',
+    //   headerAttrs: { hidden: true },
+    //   formatter: tokenLabelFormatter,
+    //   classes: 'border-0 align-middle',
+    //   headerClasses: 'border-0',
+    //   sort: false
+    // },
 
     {
         dataField: 'token',

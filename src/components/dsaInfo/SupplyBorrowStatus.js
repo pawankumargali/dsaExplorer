@@ -9,8 +9,8 @@ import SupplyBorrowStatusProgressBar from './SupplyBorrowStatusProgressBar';
 const SupplyBorrowStatus = ({ data, className, height, width }) => {
   const total = data.map(d => d.size).reduce((total, currentValue) => total + currentValue, 0);
   return (
-        <div className="w-100">
-          <Progress multi className="rounded-soft mb-3" style={{ height, width}}>
+        <div className={`w-100 ${className}`}>
+          <Progress multi className="rounded-soft mb-3 supply-borrow-progress-bar" style={{ height, width}}>
             {isIterableArray(data) &&
               data.map((d, index) => (
                 <SupplyBorrowStatusProgressBar

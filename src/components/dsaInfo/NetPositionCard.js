@@ -4,32 +4,38 @@ import { Badge, Card, CardBody, Col, Row } from 'reactstrap';
 import Flex from '../common/Flex';
 import { numberFormatter } from '../../helpers/utils';
 import AppContext, { PositionsContext } from '../../context/Context';
-import { getTokenPriceInUSD, getEthPriceInUSD, getSupportedTokenPricesInUSD } from '../../coinExPrices';
-import ethIcon from '../../assets/img/tokens/eth.svg';
+import { getTokenPriceInUSD, getEthPriceInUSD } from '../../coinExPrices';
 import tokens from '../../tokens';
 import SupplyBorrowStatus from './SupplyBorrowStatus';
 import SupplyBorrowStatusDot from './SupplyBorrowStatusDot';
 
 // const positionNames = ['compound','aave','maker','dydx'];
-const storageStatusDotColors = [
-        {
-            name: 'Supply',
-            color: '#2E8B57',
-            size:0
-        },
-        {
-            name: 'Borrow',
-            color: 'danger',
-            size:0
-        },
-
-    ];
 
 const NetPositionCard = ({ dsaAddress }) => {
   // console.log(dsaAddress);
 
   const { isDark, currency } = useContext(AppContext);
-    // const { address: dsaAddress } = match.params;
+
+  const colors = {
+    supply: isDark ? 'secondary':'success',
+    borrow: isDark ? 'danger' : 'warning'
+  }
+  const supplyBorrowStatusDotColors = [
+    {
+        name: 'Supply',
+        color: colors['supply'],
+        size:0
+    },
+    {
+        name: 'Borrow',
+        color: colors['borrow'],
+        size:0
+    },
+  
+  ];
+
+
+
   const { positions, arePositionsReceived, setArePositionsReceived, initPositions } = useContext(PositionsContext);
   const [total, setTotal]=useState({
       supply:{ eth:0, usd:0 }, 
@@ -105,8 +111,8 @@ const NetPositionCard = ({ dsaAddress }) => {
 
   const updateProgressBar = () => {
     const progress=[];
-    progress.push({ name:'Supply', size:total.supply.usd, sizeInEth:total.supply.eth, color: '#2E8B57' });
-    progress.push({ name:'Borrorw', size:total.borrow.usd, sizeInEth:total.borrow.eth, color:'danger' });
+    progress.push({ name:'Supply', size:total.supply.usd,  color: colors['supply'] });
+    progress.push({ name:'Borrorw', size:total.borrow.usd, color: colors['borrow'] });
     setProgressBarVals(progress);
     setAreValsSet(true);
   };
@@ -119,27 +125,30 @@ const NetPositionCard = ({ dsaAddress }) => {
     <Card className="dsa-page-lg-row-1">
       <FalconCardHeader className="pb-0" title="Net Position" light={false} titleTag="h6">
         <Row className="fs--1 font-weight-semi-bold">
-        {storageStatusDotColors.map((d, index) => (
-            <SupplyBorrowStatusDot {...d} isFirst={index === 0} isLast={storageStatusDotColors.length - 1 === index} key={index} />
+        {supplyBorrowStatusDotColors.map((d, index) => (
+            <SupplyBorrowStatusDot {...d} isFirst={index === 0} isLast={supplyBorrowStatusDotColors.length - 1 === index} key={index} />
         ))}
         </Row>
       </FalconCardHeader>
       <CardBody tag={Flex} align="center">
       <Row className="flex-grow-1" tag={Flex} align="end">
         <Col className="align-self-center">
-          <div className="fs-4 font-weight-normal text-sans-serif text-700 line-height-1 mb-1">
+          <div className="fs-4 font-weight-normal text-sans-serif text-700 line-height-1 mb-1"
+            style={{minWidth:'172px'}}
+          >
             {currency+' '+numberFormatter(total.supply.usd-total.borrow.usd, 2)}
           </div>
           <Badge pill color="soft-info" className="fs--2">
-          <img src={ethIcon} alt="eth-icon" style={{width:'20px'}}/>
+          <img src={tokens['eth'].icon} alt="eth-icon" style={{width:'20px'}}/>
             <span className="mx-2">{numberFormatter(total.supply.eth-total.borrow.eth, 2)}</span>
           </Badge>
         </Col>
-        <Col xs="auto" className="pl-0" id="bals-breakup-chart">
+        <Col sm="auto" >
           <SupplyBorrowStatus 
               data={progressBarVals}
               height={30}
               width={300}
+              className="supply-borrow-status-col"
           />
         </Col>
     </Row>

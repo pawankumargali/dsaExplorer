@@ -1,30 +1,19 @@
-import React, { useContext, useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import FalconCardHeader from '../common/FalconCardHeader';
-import { Badge, Card, CardBody, Col, Row, Button, Collapse, CardFooter } from 'reactstrap';
-import Flex from '../common/Flex';
-import { numberFormatter, isIterableArray, themeColors, getPosition, getGrays, colors } from '../../helpers/utils';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import AppContext, { SearchAddressContext } from '../../context/Context';
-import { getBalances } from '../../dsaInterface';
-import { getTokenPriceInUSD, getEthPriceInUSD, getSupportedTokenPricesInUSD } from '../../coinExPrices';
-import ReactEchartsCore from 'echarts-for-react/lib/core';
-import echarts from 'echarts/lib/echarts';
-import 'echarts/lib/chart/bar';
-import 'echarts/lib/component/tooltip';
-import ethIcon from '../../assets/img/tokens/eth.svg';
+// import FalconCardHeader from '../common/FalconCardHeader';
+import { Card, CardBody, Col } from 'reactstrap';
+import { getTokenPriceInUSD, getEthPriceInUSD } from '../../coinExPrices';
 import tokens from '../../tokens';
-import BalanceItem from './BalanceItem';
 
 import TokenSupplyBorrowTable from './TokenSupplyBorrowTable';
 
 
 
-const TokenSupplyBorrowDetails = ({ position, currentAsset, currentVault }) => {
+const TokenSupplyBorrowDetails = ({ position, currentAsset, currentVault, values }) => {
   
-  const [totalSize, setTotalSize] = useState(0);
-  const pageSize = 10;
   const [tokenDetails, setTokenDetails] = useState([]);
+  const [supplyTokens, setSupplyTokens] = useState([]);
+  const [borrowTokens, setBorrowTokens] = useState([]);
   const labels = {
     'maker': { supply:'Collateral', borrow:'Debt'},
     'compound':{supply:'Lent', borrow:'Borrowed'},
@@ -34,7 +23,9 @@ const TokenSupplyBorrowDetails = ({ position, currentAsset, currentVault }) => {
 
   const tokenPricesInUSD={};
   const updateTokenDetails = async () => {
-    const details=[];
+    // const details=[];
+    const supplyTkns=[];
+    const borrowTkns=[];
     if(currentAsset==='maker') {
       // console.log(position[currentVault])
       let { col, token, debt } = position[currentVault];
@@ -47,15 +38,18 @@ const TokenSupplyBorrowDetails = ({ position, currentAsset, currentVault }) => {
           tokenPricesInUSD['dai'] = await getTokenPriceInUSD(tokens['dai'].address);
         const colInUSD = col*tokenPricesInUSD[token];
         const debtInUSD = debt*tokenPricesInUSD['dai'];
-        details.push({token, label:labels[currentAsset].supply, value:col, usd:colInUSD});
-        details.push({token:'dai', label:labels[currentAsset].borrow, value: debt, usd: debtInUSD})
+        // details.push({token, label:labels[currentAsset].supply, value:col, usd:colInUSD});
+        // details.push({token:'dai', label:labels[currentAsset].borrow, value: debt, usd: debtInUSD})
+        supplyTkns.push({token,  value:col, usd:colInUSD});
+        borrowTkns.push({token:'dai',  value: debt, usd: debtInUSD})
       }
       // console.log(details);
-      setTokenDetails(details);
-      setTotalSize(details.length);
+      // setTokenDetails(details);
+      setSupplyTokens(supplyTkns);
+      setBorrowTokens(borrowTkns);
     }
     else {
-      console.log(position);
+      // console.log(position);
       for(const token in position) {
         if(!position[token].supply && !position[token].borrow) continue;
         let {supply, borrow, supplyYield, borrowYield} = position[token];
@@ -67,18 +61,21 @@ const TokenSupplyBorrowDetails = ({ position, currentAsset, currentVault }) => {
        
         if(supply!==0) {
           const supplyInUSD = supply*tokenPricesInUSD[token];
-          const val = { token, label:labels[currentAsset].supply, value:supply, usd: supplyInUSD, rate:{percentage:supplyYield, color:'soft-success'}};
-          details.push(val);
+          // const val = { token, label:labels[currentAsset].supply, value:supply, usd: supplyInUSD, rate:{percentage:supplyYield, color:'soft-success'}};
+          const val = { token, value:supply, usd: supplyInUSD, rate:{percentage:supplyYield, color:'soft-success'}};
+          supplyTkns.push(val);
         }
         if(borrow!==0) {
           const borrowInUSD = borrow*tokenPricesInUSD[token];
+          // const val = { token, label:labels[currentAsset].borrow, value: borrow, usd:borrowInUSD, rate:{percentage:borrowYield, color:'soft-warning'}};
           const val = { token, label:labels[currentAsset].borrow, value: borrow, usd:borrowInUSD, rate:{percentage:borrowYield, color:'soft-warning'}};
-          details.push(val);
+          borrowTkns.push(val);
         }
       }
       // console.log(details);
-      setTokenDetails(details);
-      setTotalSize(details.length);
+      // setTokenDetails(details);
+      setSupplyTokens(supplyTkns);
+      setBorrowTokens(borrowTkns);
     }
   }
 
@@ -88,74 +85,40 @@ const TokenSupplyBorrowDetails = ({ position, currentAsset, currentVault }) => {
   },[currentAsset, currentVault]);
 
   return (
-    <Card>
-      <CardBody>
-            <TokenSupplyBorrowTable 
-              tokenDetails={tokenDetails}
-            />
-      </CardBody>
- 
-    </Card>
+    <Fragment>
+    {supplyTokens.length!==0 &&
+      <Col lg={6} className="col-xxl-3 mb-1 pl-md-2 pr-md-2 mx-auto">
+        {values.supply.usd!==0 &&
+        <h5 className="mt-2 mb-1 pb-0 pl-md-2">{labels[currentAsset].supply}</h5>
+        }
+      <Card>
+        <CardBody>
+              <TokenSupplyBorrowTable 
+                tokenDetails={supplyTokens}
+              />
+        </CardBody>
+  
+      </Card>
+      </Col>
+    }
+    {borrowTokens.length!==0 &&
+      <Col lg={6} className="col-xxl-3 mb-1 pl-md-2 pr-md-2 mx-auto">
+        {values.borrow.usd!==0 &&
+        <h5 className="mt-2 mb-1 pb-0 pl-md-2">{labels[currentAsset].borrow}</h5>
+        }
+      <Card>
+        <CardBody>
+              <TokenSupplyBorrowTable 
+                tokenDetails={borrowTokens}
+              />
+        </CardBody>
+  
+      </Card>
+      </Col>
+    }
+    </Fragment>
   );
 };
 
 export default TokenSupplyBorrowDetails;
-
-
-
-
-
-
-
-
-
-
-
-// import React, { useContext, useState, useEffect, Fragment } from 'react';
-// import PropTypes from 'prop-types';
-// import FalconCardHeader from '../common/FalconCardHeader';
-// import { Badge, Card, CardBody, Col, Row, Button, Collapse, CardFooter } from 'reactstrap';
-// import Flex from '../common/Flex';
-// import { numberFormatter, isIterableArray, themeColors, getPosition, getGrays, colors } from '../../helpers/utils';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import AppContext, { SearchAddressContext } from '../../context/Context';
-// import { getBalances } from '../../dsaInterface';
-// import { getTokenPriceInUSD, getEthPriceInUSD, getSupportedTokenPricesInUSD } from '../../coinExPrices';
-// import ReactEchartsCore from 'echarts-for-react/lib/core';
-// import echarts from 'echarts/lib/echarts';
-// import 'echarts/lib/chart/bar';
-// import 'echarts/lib/component/tooltip';
-// import ethIcon from '../../assets/img/tokens/eth.svg';
-// import tokens from '../../tokens';
-// import BalanceItem from './BalanceItem';
-
-// import TokenSupplyItem from './TokenSupplyItem';
-// import TokenBorrowItem from './TokenBorrowItem';
-// import TokenSupplyBorrowTable from './TokenSupplyBorrowTable';
-
-
-// const TokenSupplyBorrowDetails = ({ position, isPositionSet, currentAsset, currentVault }) => {
-
-//   const { isDark, currency } = useContext(AppContext);
-//   const [totalSize, setTotalSize] = useState(0);
-//   const pageSize = 10;
-  
-//   return (
-//     <Fragment>
-//     {tokenDetails.length!==0 &&
-//       <TokenSupplyBorrowTable 
-//         pageSize={pageSize}
-//         totalSize={totalSize}
-//         currentAsset={currentAsset}
-//         currentVault={currentVault}
-//       />
-//     }
-//     </Fragment>
-    
-//   );
-// };
-
-// // TotalOrder.propTypes = { data: PropTypes.array.isRequired };
-
-// export default TokenSupplyBorrowDetails;
 
