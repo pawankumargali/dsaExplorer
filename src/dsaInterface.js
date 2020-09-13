@@ -16,30 +16,30 @@ if(!web3) {
   console.log('Error with Provider Url');
 }
 
+// Function returns dsaId for given DSA address
+async function getDsaAddressById(dsaId) {
+  try {
+    const address = await instaList.methods.accountAddr(dsaId).call();
+    return address;
+  }
+  catch(err) {
+    return '0x0000000000000000000000000000000000000000';
+  }
+}
 
-// Function returns if given address is DSA
-async function isDSA(address) {
+
+// Function returns dsaId for given DSA address
+async function getDsaIdByAddress(address) {
   try {
     const id = Number(await instaList.methods.accountID(address).call());
-    if(isNaN(id) || id===0) return false
-    return true;
+    if(isNaN(id) || id===0) return 0;
+    return id;
   }
   catch(err) {
-    return false;
+    return 0;
   }
 }
 
-// Function returns if given address belongs to a DSA Owner
-async function isOwner(address) {
-  try {
-    const accounts = await getAccounts(address);
-    if(accounts.length===0) return false;
-    return true;
-  }
-  catch(err) {
-    return false;
-  }
-}
 
 // Function to get the total number of DSAs created
 
@@ -136,4 +136,4 @@ async function getDydxPosition(address) {
   }
 }
 
-export { isDSA, isOwner, getGlobalDsaCount, getAccounts, getAuthorizedAddresses, getBalances, getCompoundPosition, getMakerPosition, getAavePosition, getDydxPosition };
+export { getDsaAddressById, getDsaIdByAddress, getGlobalDsaCount, getAccounts, getAuthorizedAddresses, getBalances, getCompoundPosition, getMakerPosition, getAavePosition, getDydxPosition };

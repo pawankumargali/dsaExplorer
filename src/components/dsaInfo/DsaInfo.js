@@ -1,7 +1,5 @@
-import React, { Fragment, useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Col, Row, Card } from 'reactstrap';
-import Flex from '../common/Flex';
+import React, { Fragment, useEffect, useState } from 'react';
+import { Col, Row } from 'reactstrap';
 import NetPositionCard from './NetPositionCard';
 import PositionsBreakupChart from './PositionsBreakupChart';
 import Balances from './Balances';
@@ -9,17 +7,51 @@ import BalancesBreakup from './BalancesBreakup';
 import DetailedPosition from './DetailedPosition';
 import Owners from './Owners';
 import RecentDSATxs from './RecentDSATxs';
-
 import PositionsDataProvider from './PositionsDataProvider';
 import BalancesDataProvider from './BalancesDataProvider';
+import { getDsaAddressById, getDsaIdByAddress, getGlobalDsaCount } from '../../dsaInterface';
 
-const DsaInfo = ({ match }) =>  {
+const DsaInfo = ({ match, history }) =>  {
 
-  const { address: dsaAddress } = match.params;
+  // route param :dsa can be the dsaId or dsaAddress
+  const { dsa } = match.params;
+
+  const [dsaAddress, setDsaAddress] = useState('');
+  const [dsaId, setDsaId] = useState(0);
+
+  const updateDsaAddress = async () => {
+    const [address, id] = await Promise.all([ getDsaAddressById(dsa), getDsaIdByAddress(dsa)]);
+    // if param :dsa is DSAId
+    if(address!='0x0000000000000000000000000000000000000000') {
+      setDsaId(dsa);
+      setDsaAddress(address);
+      return;
+    }
+    // If param :dsa is DSA Address
+    if(id!==0) {
+      setDsaId(id);
+      setDsaAddress(dsa);
+      return;
+    }
+    // If not DSA address or id => redirect to 404 error Page
+    return history.push(`/errors/404`);
+  }
+
+  useEffect(() => {
+    if(dsaAddress==='')
+      updateDsaAddress();
+  }, [dsaAddress]);
 
     return (
+      <div>
+        {dsaAddress!=='' &&
         <Fragment>
-          <h5 className="mt-4 mb-2 pb-0 pl-md-2">DSA 
+          <h5 className="mt-4 mb-2 pb-0 pl-md-0">
+            <span 
+              style={{ margin:'10px', color:'#fff', backgroundColor:'#2C7BE5', padding:'0px 10px', borderRadius:'5%'}}
+            >
+              DSA {dsaId}
+            </span>
             <a 
               href={`https://etherscan.io/address/${dsaAddress}`}
               target="_blank"
@@ -101,6 +133,8 @@ const DsaInfo = ({ match }) =>  {
     </Row>
 
         </Fragment>
+        }
+        </div>
       );
   
 };

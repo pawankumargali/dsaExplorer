@@ -1,43 +1,32 @@
 import React, { useContext, useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import FalconCardHeader from '../common/FalconCardHeader';
-import { Badge, Card, CardBody, Col, Row, Button, Collapse, CardFooter } from 'reactstrap';
+import { Badge, Card, CardBody, Col, Row } from 'reactstrap';
 import Flex from '../common/Flex';
-import { numberFormatter, isIterableArray, themeColors, getPosition, getGrays, colors } from '../../helpers/utils';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import AppContext, { SearchAddressContext, PositionsContext } from '../../context/Context';
-import { getCompoundPosition, getMakerPosition, getAavePosition, getDydxPosition } from '../../dsaInterface';
+import { numberFormatter } from '../../helpers/utils';
+import AppContext, { PositionsContext } from '../../context/Context';
 import { getTokenPriceInUSD, getEthPriceInUSD, getSupportedTokenPricesInUSD } from '../../coinExPrices';
-import ReactEchartsCore from 'echarts-for-react/lib/core';
-import echarts from 'echarts/lib/echarts';
-import 'echarts/lib/chart/bar';
-import 'echarts/lib/component/tooltip';
 import ethIcon from '../../assets/img/tokens/eth.svg';
 import tokens from '../../tokens';
-// import OverallNetPosition from './OverallNetPosition';
-// import NetPositionItem from './NetPositionItem';
-import StorageStatus from './StorageStatus';
-import StorageStatusDot from './StorageStatusDot';
-// import MakerNetPositionItem from './MakerNetPositionItem';
-import PositionsDataProvider from './PositionsDataProvider';
+import SupplyBorrowStatus from './SupplyBorrowStatus';
+import SupplyBorrowStatusDot from './SupplyBorrowStatusDot';
 
-const positionNames = ['compound','aave','maker','dydx'];
+// const positionNames = ['compound','aave','maker','dydx'];
 const storageStatusDotColors = [
         {
             name: 'Supply',
-            color: 'success',
+            color: '#2E8B57',
             size:0
         },
         {
             name: 'Borrow',
-            color: 'warning',
+            color: 'danger',
             size:0
         },
 
     ];
 
 const NetPositionCard = ({ dsaAddress }) => {
-  console.log(dsaAddress);
+  // console.log(dsaAddress);
 
   const { isDark, currency } = useContext(AppContext);
     // const { address: dsaAddress } = match.params;
@@ -116,8 +105,8 @@ const NetPositionCard = ({ dsaAddress }) => {
 
   const updateProgressBar = () => {
     const progress=[];
-    progress.push({ name:'Supply', size:total.supply.usd, sizeInEth:total.supply.eth, color: 'success' });
-    progress.push({ name:'Borrorw', size:total.borrow.usd, sizeInEth:total.borrow.eth, color:'warning' });
+    progress.push({ name:'Supply', size:total.supply.usd, sizeInEth:total.supply.eth, color: '#2E8B57' });
+    progress.push({ name:'Borrorw', size:total.borrow.usd, sizeInEth:total.borrow.eth, color:'danger' });
     setProgressBarVals(progress);
     setAreValsSet(true);
   };
@@ -131,7 +120,7 @@ const NetPositionCard = ({ dsaAddress }) => {
       <FalconCardHeader className="pb-0" title="Net Position" light={false} titleTag="h6">
         <Row className="fs--1 font-weight-semi-bold">
         {storageStatusDotColors.map((d, index) => (
-            <StorageStatusDot {...d} isFirst={index === 0} isLast={storageStatusDotColors.length - 1 === index} key={index} />
+            <SupplyBorrowStatusDot {...d} isFirst={index === 0} isLast={storageStatusDotColors.length - 1 === index} key={index} />
         ))}
         </Row>
       </FalconCardHeader>
@@ -147,7 +136,7 @@ const NetPositionCard = ({ dsaAddress }) => {
           </Badge>
         </Col>
         <Col xs="auto" className="pl-0" id="bals-breakup-chart">
-          <StorageStatus 
+          <SupplyBorrowStatus 
               data={progressBarVals}
               height={30}
               width={300}

@@ -35,7 +35,6 @@ const TokenSupplyBorrowDetails = ({ position, currentAsset, currentVault }) => {
   const tokenPricesInUSD={};
   const updateTokenDetails = async () => {
     const details=[];
-    
     if(currentAsset==='maker') {
       // console.log(position[currentVault])
       let { col, token, debt } = position[currentVault];
@@ -51,7 +50,7 @@ const TokenSupplyBorrowDetails = ({ position, currentAsset, currentVault }) => {
         details.push({token, label:labels[currentAsset].supply, value:col, usd:colInUSD});
         details.push({token:'dai', label:labels[currentAsset].borrow, value: debt, usd: debtInUSD})
       }
-      console.log(details);
+      // console.log(details);
       setTokenDetails(details);
       setTotalSize(details.length);
     }
@@ -77,7 +76,7 @@ const TokenSupplyBorrowDetails = ({ position, currentAsset, currentVault }) => {
           details.push(val);
         }
       }
-      console.log(details);
+      // console.log(details);
       setTokenDetails(details);
       setTotalSize(details.length);
     }
@@ -92,8 +91,6 @@ const TokenSupplyBorrowDetails = ({ position, currentAsset, currentVault }) => {
     <Card>
       <CardBody>
             <TokenSupplyBorrowTable 
-              pageSize={pageSize}
-              totalSize={totalSize}
               tokenDetails={tokenDetails}
             />
       </CardBody>

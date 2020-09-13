@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { getGrays, getPosition, isIterableArray, numberFormatter } from '../../helpers/utils';
-import MarketShareItem from './MarketShareItem';
+import TxVolBreakupItem from './TxVolBreakupItem';
 import { Card, CardBody, Col, Row } from 'reactstrap';
 import echarts from 'echarts/lib/echarts';
 import ReactEchartsCore from 'echarts-for-react/lib/core';
@@ -49,7 +48,7 @@ const getOption = (data, isDark) => {
   };
 };
 
-const MarketShare = ( ) => {
+const TxVolumeBreakup = () => {
 
   const { currency } = useContext(AppContext);
   const { txVolData, IsTxVolDataReceived } = useContext(TxVolDataContext);
@@ -91,7 +90,6 @@ const MarketShare = ( ) => {
       }
       // console.log(vals);
       setValues(vals);
-      console.log(vals);
       setAreValsSet(true);
       const total = {usd: totalUSD, eth: totalEth};
       setTotal(total);
@@ -113,7 +111,7 @@ const MarketShare = ( ) => {
             <h6 className="mt-1 mb-4" style={{minWidth:'200px'}}>Transaction Volume Breakup</h6>
             <div className="fs--1">
               {isIterableArray(values) &&
-                values.map(({...rest }, index) => <MarketShareItem
+                values.map(({...rest }, index) => <TxVolBreakupItem
                                                     {...rest} 
                                                     totalUSD={total.usd} 
                                                     key={index} 
@@ -138,6 +136,5 @@ const MarketShare = ( ) => {
   );
 };
 
-// MarketShare.propTypes = { data: PropTypes.array.isRequired };
 
-export default MarketShare;
+export default TxVolumeBreakup;

@@ -8,7 +8,7 @@ import AppContext, { SearchAddressContext, PositionsContext } from '../../contex
 import { getTokenPriceInUSD, getEthPriceInUSD, getSupportedTokenPricesInUSD } from '../../coinExPrices';
 import ethIcon from '../../assets/img/tokens/eth.svg';
 import tokens from '../../tokens';
-import StorageStatus from './StorageStatus';
+import StorageStatus from './SupplyBorrowStatus';
 import compoundIcon from '../../assets/img/defi/compound.svg';
 import aaveIcon from '../../assets/img/defi/aave.svg';
 import makerIcon from '../../assets/img/defi/maker.svg';

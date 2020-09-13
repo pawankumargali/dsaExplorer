@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Form, Input } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SearchAddressContext } from '../../context/Context';
-import {isDSA, isOwner} from '../../dsaInterface';
+import {getDsaAddressById, getGlobalDsaCount,getDsaIdByAddress, getAccounts } from '../../dsaInterface';
 
 const NavSearchBox = ({icon, placeholder, className, history }) =>  {
 
@@ -13,13 +13,13 @@ const NavSearchBox = ({icon, placeholder, className, history }) =>  {
     e.preventDefault();
     setSearchAddress(searchAddress);
     if(searchAddress==='') return;
-    const [IsDsa, IsOwner] = await Promise.all([ isDSA(searchAddress), isOwner(searchAddress)]);
-    setSearchAddress('');
-    if(IsDsa) 
-      return history.push(`/dsa/${searchAddress}`);
-    if(IsOwner)
+    const dsaAccounts = await getAccounts(searchAddress);
+    setSearchAddress(''); 
+    // If is Owner Address
+    if(dsaAccounts.length!==0)
       return history.push(`/owner/${searchAddress}`);
-    return history.push(`/errors/404`);
+    else 
+      return history.push(`/dsa/${searchAddress}`);
   }
 
   const handleChange = e => setSearchAddress(e.target.value);

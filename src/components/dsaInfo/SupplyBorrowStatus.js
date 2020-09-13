@@ -1,19 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, CardBody, Progress, Row } from 'reactstrap';
-import Flex from '../common/Flex';
+import { Progress } from 'reactstrap';
+// import Flex from '../common/Flex';
 import { isIterableArray } from '../../helpers/utils';
-import StorageStatusProgressBar from './StorageStatusProgressBar';
+import SupplyBorrowStatusProgressBar from './SupplyBorrowStatusProgressBar';
 // import StorageStatusDot from './StorageStatusDot';
 
-const StorageStatus = ({ data, className, height, width }) => {
+const SupplyBorrowStatus = ({ data, className, height, width }) => {
   const total = data.map(d => d.size).reduce((total, currentValue) => total + currentValue, 0);
   return (
         <div className="w-100">
           <Progress multi className="rounded-soft mb-3" style={{ height, width}}>
             {isIterableArray(data) &&
               data.map((d, index) => (
-                <StorageStatusProgressBar
+                <SupplyBorrowStatusProgressBar
                   {...d}
                   percentage={(d.size * 100) / total}
                   isLast={data.length - 1 === index}
@@ -25,7 +25,7 @@ const StorageStatus = ({ data, className, height, width }) => {
   );
 };
 
-StorageStatus.propTypes = {
+SupplyBorrowStatus.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
@@ -35,4 +35,4 @@ StorageStatus.propTypes = {
   )
 };
 
-export default StorageStatus;
+export default SupplyBorrowStatus;

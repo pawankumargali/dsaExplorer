@@ -14,8 +14,8 @@ import 'echarts/lib/component/tooltip';
 import ethIcon from '../../assets/img/tokens/eth.svg';
 import tokens from '../../tokens';
 import NetPositionItem from './NetPositionItem';
-import StorageStatus from './StorageStatus';
-import StorageStatusDot from './StorageStatusDot';
+import StorageStatus from './SupplyBorrowStatus';
+import StorageStatusDot from './SupplyBorrowStatusDot';
 import { update } from 'lodash';
 
 

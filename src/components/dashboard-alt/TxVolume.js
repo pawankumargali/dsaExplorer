@@ -85,7 +85,7 @@ const getOption = (xValues, yValues, dataBackground, isDark) => {
   };
 };
 
-const WeeklySales = () => {
+const TxVolume = () => {
 
   const { currency, isDark } = useContext(AppContext);
 
@@ -187,6 +187,5 @@ const WeeklySales = () => {
   );
 };
 
-// WeeklySales.propTypes = { data: PropTypes.array.isRequired };
 
-export default WeeklySales;
+export default TxVolume;

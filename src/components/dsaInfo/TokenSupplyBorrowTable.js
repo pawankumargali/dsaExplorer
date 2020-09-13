@@ -26,15 +26,15 @@ const tokenLabelFormatter = tokenLabel => {
 const tokenNameFormatter = token => (
     <div>
         <img src={tokens[token].icon} alt="eth-icon" style={{width:'20px', marginRight:'10px'}}/>
-        <span style={{lineHeight:'25px', fontWeight:'600'}}>{tokens[token].name}</span>
+        <span style={{lineHeight:'25px', fontWeight:'700', fontSize:'0.9rem'}}>{tokens[token].name}</span>
     </div>
 )
 const tokenAmtFormatter = tokenAmt => (
-    <span style={{lineHeight:'25px', fontWeight:'600'}}>{tokenAmt < 0.001 ? numberFormatter(tokenAmt,6) : numberFormatter(tokenAmt,2)}</span>
+    <span style={{lineHeight:'25px', fontWeight:'700', fontSize:'0.9rem'}}>{tokenAmt < 0.001 ? numberFormatter(tokenAmt,6) : numberFormatter(tokenAmt,2)}</span>
 )
 
 const tokenAmtInUSDFormatter = tokenAmt => (
-    <span style={{lineHeight:'25px', fontWeight:'600'}}>{'$'+(tokenAmt < 0.001 ? numberFormatter(tokenAmt,6) : numberFormatter(tokenAmt,2)) }</span>
+    <span style={{lineHeight:'25px', fontWeight:'700', fontSize:'0.9rem'}}>{'$'+(tokenAmt < 0.001 ? numberFormatter(tokenAmt,6) : numberFormatter(tokenAmt,2)) }</span>
     
 
 )
@@ -101,10 +101,10 @@ const columns = [
 
 
 
-const TokenSupplyBorrowTable = ({ pageSize, totalSize, tokenDetails, asset }) => {
+const TokenSupplyBorrowTable = ({ tokenDetails }) => {
 
 
-  const { isDark } = useContext(AppContext);
+  // const { isDark } = useContext(AppContext);
 
   let table = createRef();
 

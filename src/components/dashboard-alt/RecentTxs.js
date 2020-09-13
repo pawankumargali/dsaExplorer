@@ -1,8 +1,7 @@
-import React, { useState, useEffect, Fragment } from 'react';
-import PurchasesTable from './PurchasesTable';
+import React, { useState, Fragment } from 'react';
+import RecentTxsTable from './RecentTxsTable';
 import FalconCardHeader from '../common/FalconCardHeader';
-import { InputGroup, CustomInput, Button, Card, CardBody } from 'reactstrap';
-// import RecentTxsDataProvider from './RecentTxsDataProvider';
+import { InputGroup, CustomInput, Card, CardBody } from 'reactstrap';
 import RecentTxsDataProvider from './RecentTxsDataProvider';
 import ButtonIcon from '../common/ButtonIcon';
 import { Link } from 'react-router-dom';
@@ -80,7 +79,7 @@ const RecentTxs = ({isPreview}) => {
       </FalconCardHeader>
       <CardBody className="p-0">
       <RecentTxsDataProvider>
-        <PurchasesTable 
+        <RecentTxsTable 
           pageSize={pageSize}
           totalSize={totalSize}
           pageNums={pageNums}

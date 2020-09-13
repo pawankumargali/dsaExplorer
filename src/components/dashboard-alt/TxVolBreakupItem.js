@@ -6,7 +6,7 @@ import AppContext from '../../context/Context';
 import { numberFormatter } from '../../helpers/utils';
 import ethIcon from '../../assets/img/tokens/eth.svg';
 
-const MarketShareItem = ({ color, name, usd, eth, totalUSD }) => {
+const TxVolBreakupItem = ({ color, name, usd, eth, totalUSD }) => {
   
   const{ currency } = useContext(AppContext);
   const inlineStyle = { width: '20%', textAlign:'left' };
@@ -30,11 +30,12 @@ const MarketShareItem = ({ color, name, usd, eth, totalUSD }) => {
     </Flex>
   );
 }
-MarketShareItem.propsType = {
+
+TxVolBreakupItem.propsType = {
   color: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   value: PropTypes.number.isRequired,
   totalShare: PropTypes.number.isRequired
 };
 
-export default MarketShareItem;
+export default TxVolBreakupItem;

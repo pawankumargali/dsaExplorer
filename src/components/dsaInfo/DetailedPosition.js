@@ -16,8 +16,8 @@ import ethIcon from '../../assets/img/tokens/eth.svg';
 import tokens from '../../tokens';
 import OverallNetPosition from './OverallNetPosition';
 import NetPositionItem from './NetPositionItem';
-import StorageStatus from './StorageStatus';
-import StorageStatusDot from './StorageStatusDot';
+import StorageStatus from './SupplyBorrowStatus';
+import StorageStatusDot from './SupplyBorrowStatusDot';
 import MakerNetPositionItem from './MakerNetPositionItem';
 import PositionsDataProvider from './PositionsDataProvider';
 

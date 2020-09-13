@@ -11,8 +11,7 @@ import 'echarts/lib/component/tooltip';
 import 'echarts/lib/component/legend';
 import axios from 'axios';
 import { getGlobalDsaCount } from '../../dsaInterface';
-
-// import { totalSalesByMonth } from '../../data/dashboard/topProducts';
+import { DSA_API_KEY } from '../../config';
 
 function getFormatter(params) {
   const { name, value } = params[0];
@@ -121,7 +120,7 @@ const getOption = (xValues, yValues, isDark) => {
   };
 };
 
-const TotalSales = ({ className }) => {
+const CreationTimeline = ({ className }) => {
 
   const { isDark } = useContext(AppContext);
 
@@ -138,7 +137,7 @@ const TotalSales = ({ className }) => {
   const updateCreationCounts = async () => {
     try {
       // Before deploying store key and url in env variables
-      const creationCountUrl = 'https://dsa-info.herokuapp.com/api/dsa/creation/counts?key=Er2wUbHQ8hYADskWFk9JQntnf';
+      const creationCountUrl = `https://dsa-info.herokuapp.com/api/dsa/creation/counts?key=Er2wUbHQ8hYADskWFk9JQntnf`;
       const [countsResponse, totalCount]  = await Promise.all([axios.get(creationCountUrl),getGlobalDsaCount()]);
       const { data } = countsResponse.data;
       setCounts(data);
@@ -302,8 +301,8 @@ const TotalSales = ({ className }) => {
   );
 };
 
-TotalSales.propTypes = {
+CreationTimeline.propTypes = {
   className: PropTypes.string
 };
 
-export default TotalSales;
+export default CreationTimeline;

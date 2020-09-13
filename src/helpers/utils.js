@@ -65,6 +65,10 @@ export const numberFormatter = (number, fixed = 2) => {
     : Math.abs(Number(number)).toFixed(fixed);
 };
 
+export const hashFormatter = (hashString, length) => {
+   const len = parseInt(length/2);
+   return hashString.substring(0,len)+'...'+hashString.substring(hashString.length-len);
+}
 //===============================
 // Colors
 //===============================

@@ -5,7 +5,7 @@ import Flex from '../common/Flex';
 import classNames from 'classnames';
 import Dot from '../common/Dot';
 
-const StorageStatusDot = ({ name, size, color, isFirst, isLast }) => (
+const SupplyBorrowStatusDot = ({ name, size, color, isFirst, isLast }) => (
   <Col
     xs="auto"
     tag={Flex}
@@ -18,11 +18,11 @@ const StorageStatusDot = ({ name, size, color, isFirst, isLast }) => (
   >
     <Dot color={color} />
     <span>{name}</span>
-    <span className="d-none d-md-inline-block d-lg-none d-xxl-inline-block ml-1">({size}MB)</span>
+    {/* <span className="d-none d-md-inline-block d-lg-none d-xxl-inline-block ml-1">({size}MB)</span> */}
   </Col>
 );
 
-StorageStatusDot.propTypes = {
+SupplyBorrowStatusDot.propTypes = {
   name: PropTypes.string.isRequired,
   size: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
@@ -30,9 +30,9 @@ StorageStatusDot.propTypes = {
   isLast: PropTypes.bool
 };
 
-StorageStatusDot.defaultProps = {
+SupplyBorrowStatusDot.defaultProps = {
   isFirst: false,
   isLast: false
 };
 
-export default StorageStatusDot;
+export default SupplyBorrowStatusDot;

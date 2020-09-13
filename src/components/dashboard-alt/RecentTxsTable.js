@@ -3,12 +3,16 @@ import paginationFactory, { PaginationProvider } from 'react-bootstrap-table2-pa
 import BootstrapTable from 'react-bootstrap-table-next';
 import Badge from 'reactstrap/es/Badge';
 import { Button, Col, Row } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import ButtonIcon from '../common/ButtonIcon';
 import { isIterableArray } from '../../helpers/utils';
 import { themeColors } from '../../helpers/utils';
 import AppContext, { RecentTxsDataContext } from '../../context/Context';
 import axios from 'axios';
 import ethIcon from '../../assets/img/tokens/eth.svg';
+import {getDsaAddressById } from '../../dsaInterface';
+import { hashFormatter } from '../../helpers/utils';
+
 
 const CustomTotal = ({ sizePerPage, totalSize, page, lastIndex }) =>  {
   if(totalSize===0) 
@@ -26,8 +30,21 @@ const txHashFormatter = txHash => (
     target="_blank"
     rel="noopener noreferrer"
   > 
-    {txHash.substring(0,20)+'...'}
+    {hashFormatter(txHash, 10)}
   </a>
+);
+
+const dsaAddressForId = async dsaId  => { 
+  const address=await getDsaAddressById(dsaId);
+  return `dsa/${address}`;
+}
+const dsaIdFormatter = dsaId => (
+  <Link
+    to={`/dsa/${dsaId}`}
+    className="font-weight-semi-bold"
+  > 
+    {dsaId}
+  </Link>
 );
 
 const blockNumberFormatter = blockNo => (
@@ -63,7 +80,7 @@ const fromAddressFormatter = address => (
     target="_blank"
     rel="noopener noreferrer"
   > 
-    {address.substring(0,20)+'...'}
+    {hashFormatter(address,10)}
   </a>
 );
 
@@ -80,7 +97,7 @@ const toAddressFormatter = address => {
       target="_blank"
       rel="noopener noreferrer"
     > 
-      {address.substring(0,20)+'...'}
+    {hashFormatter(address,10)}
     </a>
   )
 }
@@ -111,9 +128,14 @@ const columns = [
     classes: 'border-0 align-middle',
     headerClasses: 'border-0',
     sort: false,
-    // filter:textFilter({
-    //   placeholder: columnFilterPlaceHolder()
-    // })
+  },
+  {
+    dataField: 'dsaId',
+    text: 'DSA Id',
+    formatter: dsaIdFormatter,
+    classes: 'border-0 align-middle',
+    headerClasses: 'border-0',
+    sort: false,
   },
   {
     dataField: 'blockNumber',
@@ -160,7 +182,7 @@ const columns = [
   }
 ];
 
-const PurchasesTable = ({ pageSize, pageNums, totalSize, isAllRecentTxsPage, txSearchText, setPageSize, setTotalSize }) => {
+const RecentTxsTable = ({ pageSize, pageNums, totalSize, isAllRecentTxsPage, txSearchText, setPageSize, setTotalSize }) => {
 
 
   const { isDark } = useContext(AppContext);
@@ -209,12 +231,12 @@ const PurchasesTable = ({ pageSize, pageNums, totalSize, isAllRecentTxsPage, txS
       else {
         const txsToDisplay=[];
         for(const tx of txs) {
-          let { hash, from, to } = tx;
+          let { hash, from, to, dsaId } = tx;
           hash=hash.toLowerCase();
           from=from.toLowerCase();
           to=to.toLowerCase();
           const searchText=txSearchText.toLowerCase();
-          if(hash.includes(searchText) || from.includes(searchText) || to.includes(searchText))
+          if(hash.includes(searchText) || from.includes(searchText) || to.includes(searchText) || dsaId.toString().includes(searchText))
             txsToDisplay.push(tx);
         }
         setDisplayTxs(txsToDisplay);
@@ -315,4 +337,4 @@ const PurchasesTable = ({ pageSize, pageNums, totalSize, isAllRecentTxsPage, txS
   );
 };
 
-export default PurchasesTable;
+export default RecentTxsTable;

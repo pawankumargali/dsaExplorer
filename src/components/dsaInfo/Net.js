@@ -15,8 +15,8 @@ import 'echarts/lib/component/tooltip';
 import ethIcon from '../../assets/img/tokens/eth.svg';
 import tokens from '../../tokens';
 import BalanceItem from './BalanceItem';
-import StorageStatus from './StorageStatus';
-import StorageStatusDot from './StorageStatusDot';
+import StorageStatus from './SupplyBorrowStatus';
+import StorageStatusDot from './SupplyBorrowStatusDot';
 
 
 
