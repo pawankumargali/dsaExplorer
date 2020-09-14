@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Col, Row } from 'reactstrap';
 import OwnedDSAs from './OwnedDSAs';
 import NetPositionCard from '../dsaInfo/NetPositionCard';
@@ -78,7 +78,9 @@ const OwnerInfo = ({ match }) =>  {
             </Col>
 
             <Col lg={6} className="col-xxl-3 mb-1 pl-md-2 pr-md-2">
+            <BalancesDataProvider>
               <BalancesBreakup dsaAddress={dsaAddress} />
+            </BalancesDataProvider>
             </Col>
 
           </Row>

@@ -92,7 +92,7 @@ const Balances = ({ dsaAddress }) => {
   return (
     <Card className="dsa-page-lg-row-1">
       <FalconCardHeader className="pb-0" title="Balances" light={false} titleTag="h6" />
-      <CardBody tag={Flex} align="start">
+      <CardBody tag={Flex} align="center">
         <Row className="flex-grow-1" tag={Flex} align="end">
           <Col className="align-self-center">
             <div className="fs-4 font-weight-normal text-sans-serif text-700 line-height-1 mb-1">

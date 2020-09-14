@@ -16,6 +16,7 @@ const PositionsBreakupChart = ({ dsaAddress }) => {
 
   const { positions, arePositionsReceived, setArePositionsReceived, initPositions } = useContext(PositionsContext);
   const [arePositionsSet, setArePositionsSet] = useState(false);
+  const [hasNoPosition, setHasNoPosition] = useState(false);
   const tokenPricesInUSD={};
   const _getTotalMakerColAndDebtInUSD = async makerPos => {
     let totalColInUSD=0;
@@ -41,6 +42,8 @@ const PositionsBreakupChart = ({ dsaAddress }) => {
   useEffect(() => {
     setArePositionsReceived(false);
     setArePositionsSet(false);
+    initPositions(dsaAddress);
+    setHasNoPosition(false);
   }, [dsaAddress]);
 
   useEffect(() => {
@@ -54,11 +57,11 @@ const PositionsBreakupChart = ({ dsaAddress }) => {
       if(!!compound && !!aave && !!maker && !!dydx) 
         setArePositionsSet(true);
     }
-  }, [arePositionsReceived, arePositionsSet]);
+  }, [arePositionsReceived]);
 
   return (
     <Fragment>
-    { arePositionsSet && 
+    { arePositionsSet && !hasNoPosition &&
     <Card className="dsa-page-lg-row-2">
        <FalconCardHeader className="pb-0" title="Positions Breakup" light={false} titleTag="h6"></FalconCardHeader>
       <CardBody className="h-100" style={{position:'relative'}}>
@@ -68,6 +71,7 @@ const PositionsBreakupChart = ({ dsaAddress }) => {
               positions={positions}
               arePositionsSet={arePositionsSet}
               getTotalMakerColAndDebtInUSD={_getTotalMakerColAndDebtInUSD}
+              setHasNoPosition={setHasNoPosition}
           />
         </div>
           <PositionsBreakupBarChart 

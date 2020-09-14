@@ -10,6 +10,7 @@ import RecentDSATxs from './RecentDSATxs';
 import PositionsDataProvider from './PositionsDataProvider';
 import BalancesDataProvider from './BalancesDataProvider';
 import { getDsaAddressById, getDsaIdByAddress } from '../../helpers/dsaInterface';
+import DsaIdAndAddress from './DsaIdAndAddress';
 
 const DsaInfo = ({ match, history }) =>  {
 
@@ -50,19 +51,11 @@ const DsaInfo = ({ match, history }) =>  {
       <div>
         {dsaAddress!=='' &&
         <Fragment>
-          <h5 className="mt-4 mb-2 pb-0 pl-md-0">
-            <span 
-              style={{ margin:'10px', color:'#fff', backgroundColor:'#2C7BE5', padding:'0px 10px', borderRadius:'5%'}}
-            >
-              DSA {dsaId}
-            </span>
-            <a 
-              href={`https://etherscan.io/address/${dsaAddress}`}
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              {' '+dsaAddress}
-            </a>
+          <h5 className="mt-4 mb-2 pb-0 pl-md-0 pr-md-0">
+           <DsaIdAndAddress 
+             dsaAddress={dsaAddress}
+             dsaId={dsaId}
+           />
           </h5>
           
           {/* md-display owners */}
@@ -118,7 +111,9 @@ const DsaInfo = ({ match, history }) =>  {
             </Col>
 
             <Col lg={6} className="col-xxl-3 mb-2 pl-md-2 pr-md-2">
-              <BalancesBreakup dsaAddress={dsaAddress} />
+              <BalancesDataProvider>
+                <BalancesBreakup dsaAddress={dsaAddress} />
+              </BalancesDataProvider>
             </Col>
 
           </Row>

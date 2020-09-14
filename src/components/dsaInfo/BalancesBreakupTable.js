@@ -4,7 +4,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import Badge from 'reactstrap/es/Badge';
 import { Col, Row } from 'reactstrap';
 import ButtonIcon from '../common/ButtonIcon';
-import AppContext, { BalancesDataContext } from '../../context/Context';
+import { BalancesDataContext } from '../../context/Context';
 import { numberFormatter } from '../../helpers/utils';
 import tokens from '../../helpers/tokens';
 
@@ -20,16 +20,6 @@ const CustomTotal = ({ sizePerPage, totalSize, page, lastIndex }) =>  {
           {(page - 1) * sizePerPage + 1} to {lastIndex > totalSize ? totalSize : lastIndex} of {totalSize} 
         </span>);
 }
-
-const addressFormatter = ownerAddress => (
-  <a href={`https://etherscan.io/address/${ownerAddress}`} 
-    className="font-weight-semi-bold"
-    target="_blank"
-    rel="noopener noreferrer"
-  > 
-    {ownerAddress.substring(0,20)+'...'}
-  </a>
-);
 
 const colorDotFormatter = colorCode => (
     <div style={{width:'10px', height:'10px', backgroundColor:colorCode, borderRadius:'50%'}}></div>
@@ -53,7 +43,7 @@ const tokenAmtInUSDFormatter = tokenAmt => (
 )
 
 const tokenAmtInEthFormatter = tokenAmt => (
-    <div>
+    <div className="d-none d-sm-block">
         <img src={tokens['eth'].icon} alt="eth-icon" style={{width:'12px', marginRight:'5px'}}/>
         <span>{tokenAmt < 0.001 ? numberFormatter(tokenAmt,6) : numberFormatter(tokenAmt,2)}</span>
     </div>
@@ -124,30 +114,17 @@ const columns = [
  }
 ];
 
-const BalancesBreakupTable = ({ pageSize, totalSize, searchText, setTotalSize, dsaAddress, setHideBalBreakup }) => {
+const BalancesBreakupTable = ({ pageSize, totalSize, searchText, setTotalSize, balances}) => {
 
 
-  const { isDark } = useContext(AppContext);
-  const { balances, setBalances, initBalances } = useContext(BalancesDataContext);
+  // const { isDark } = useContext(AppContext);
+ 
   const [displayBalances, setDisplayBalances] = useState([]);
   const [areDisplayBalsSet, setAreDisplayBalsSet] = useState(false);
   
   // Pagination options
   const [options, setOptions] = useState({custom:true, sizePerPage:pageSize, totalSize});
   
-  useEffect(() => {
-    setBalances([]);
-    setDisplayBalances([]);
-    setAreDisplayBalsSet(false);
-    initBalances(dsaAddress);
-  }, [dsaAddress]);
-
-  useEffect(() => {
-    if(balances.length===0) 
-      initBalances(dsaAddress);
-  },[balances.length]);
-
-
   // updates the owners to be displayed based on search filter text
   const updateDisplayBalances = () => {
       if(searchText==="") {
@@ -175,7 +152,7 @@ const BalancesBreakupTable = ({ pageSize, totalSize, searchText, setTotalSize, d
   
 
   useEffect(() => {
-      if(balances.length!==0 && (!areDisplayBalsSet || searchText!=='')) 
+      if(balances.length!==0 && (!areDisplayBalsSet || searchText!==''))  
         updateDisplayBalances();
   }, [balances.length, areDisplayBalsSet, searchText, totalSize]);
 

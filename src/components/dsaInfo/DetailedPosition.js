@@ -131,8 +131,8 @@ const DetailedPosition = ({ dsaAddress }) => {
   return (
     <Fragment>
     <h5 className="mt-4 mb-1 pb-0 pl-md-2">Detailed Position</h5>
-    <Row noGutters className="mt-2 mb-1"> 
-      <Col lg={currentAsset==='maker'? 2:3} md={currentAsset==='maker' ? 6:12} className="col-xxl-3 mb-2 pl-md-1 pr-md-0">
+    <Row className="mt-2 mb-1 pl-md-2 pr-md-2"> 
+      <Col lg={currentAsset==='maker'? 2:3} md={currentAsset==='maker' ? 6:12} sm={currentAsset==='maker' ? 6:12} className="col-xxl-3 mb-2 pl-md-2 pr-md-0">
         <Asset 
           assets={assets}
           currentAsset={currentAsset}
@@ -143,7 +143,7 @@ const DetailedPosition = ({ dsaAddress }) => {
       </Col>
 
       {currentAsset==='maker' && makerVaults.length!==0 &&
-        <Col lg={2} md={6} className="col-xxl-3 mb-2 pl-md-2 pr-md-0">
+        <Col lg={2} md={6} sm={6} className="col-xxl-3 mb-2 pl-md-2 pr-md-0">
           <MakerVault 
             vaults={makerVaults}
             currentVault={currentMakerVault}
@@ -153,13 +153,13 @@ const DetailedPosition = ({ dsaAddress }) => {
       }
       
       <Col className="col-xxl-3 mb-2 pl-md-2 pr-md-0">
-        <Net lg="auto" md={8}
+        <Net lg={8} md={8}
           values={values}
         />
       </Col>
 
       {areValsSet &&
-      <Col lg={3} md={4} className="col-xxl-3 mb-2 pl-md-2 pr-md-0">
+      <Col lg={2} md={4} className="col-xxl-3 mb-2 pl-md-2 pr-md-0">
        <Status 
         position={position}
         values={values}

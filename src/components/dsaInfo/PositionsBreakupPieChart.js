@@ -49,12 +49,12 @@ const getOption = (data, isDark) => {
 };
 
 
-const PositionsBreakupPieChart = ({ positions, arePositionsSet, getTotalMakerColAndDebtInUSD }) => {
+const PositionsBreakupPieChart = ({ positions, arePositionsSet, getTotalMakerColAndDebtInUSD, setHasNoPosition }) => {
   const { isDark } = useContext(AppContext);
 
   const [isChartUpdated, setIsChartUpdated] = useState(false);
 
-  const names= ['Maker', 'Compound', 'Aave', 'dYdX'];
+  // const names= ['Maker', 'Compound', 'Aave', 'dYdX'];
   const colors=['#2c7be5','#27bcfd', '#39F3BB', '#999','#d8e2ef'];
 
   const [values, setValues] = useState([]);
@@ -88,7 +88,7 @@ const PositionsBreakupPieChart = ({ positions, arePositionsSet, getTotalMakerCol
       val.color = colors[colorIndex];
       colorIndex+=1;
     }
-    setValues([...vals]);
+    setValues(vals);
     // console.log(vals);
     setIsChartUpdated(true);
   }
@@ -98,9 +98,14 @@ const PositionsBreakupPieChart = ({ positions, arePositionsSet, getTotalMakerCol
       updateChart();
   },[arePositionsSet, isChartUpdated])
 
+  useEffect(() => {
+    if(isChartUpdated && values.length===0)
+      setHasNoPosition(true); 
+
+  },[isChartUpdated])
   return (
         <ReactEchartsCore
-        echarts={echarts}
+        echarts={echarts} 
         option={getOption(values, isDark)}
         style={{ width: '4rem', height: '4rem'}}
         />

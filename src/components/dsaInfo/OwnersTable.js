@@ -4,7 +4,6 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import { Col, Row } from 'reactstrap';
 import ButtonIcon from '../common/ButtonIcon';
 // import AppContext from '../../context/Context';
-import { getAuthorizedAddresses } from '../../helpers/dsaInterface';
 import { hashFormatter } from '../../helpers/utils'
 import { Link } from 'react-router-dom';
 
@@ -12,9 +11,8 @@ import { Link } from 'react-router-dom';
 const CustomTotal = ({ sizePerPage, totalSize, page, lastIndex }) =>  {
   if(totalSize===0) 
     return (<span>
-            No matches
           </span>);
-  return (<span>
+  return (<span style={{fontSize:'12px'}}>
           {(page - 1) * sizePerPage + 1} to {lastIndex > totalSize ? totalSize : lastIndex} of {totalSize} 
         </span>);
 }
@@ -23,7 +21,10 @@ const addressFormatter = ownerAddress => (
   <Link to={`../owner/${ownerAddress}`} 
     className="font-weight-semi-bold"
   > 
-    {hashFormatter(ownerAddress,16)}
+    <span className="d-none d-lg-block">{hashFormatter(ownerAddress,12)}</span>
+    <span className="d-none d-sm-block d-lg-none">{ownerAddress}</span>
+    <span className="d-block d-sm-none">{hashFormatter(ownerAddress,30)}</span>
+
   </Link>
 );
 
@@ -39,64 +40,39 @@ const columns = [
   }
 ];
 
-const OwnersTable = ({ pageSize, totalSize, searchText, setTotalSize, dsaAddress }) => {
+const OwnersTable = ({ pageSize, totalSize, searchText, setTotalSize, owners }) => {
 
 
   // const { isDark } = useContext(AppContext);
-
-  const [owners, setOwners] = useState([]);
-  const [areOwnersReceived, setAreOwnersReceived] = useState(false);
   const [displayOwners, setDisplayOwners] = useState([]);
-  
   // Pagination options
   const [options, setOptions] = useState({custom:true, sizePerPage:pageSize, totalSize});
-  // show numbered pages when search filter is not triggered
-
-  // fetches data and updates owners
-  const updateOwners = async () => {
-    try {
-      const data = await getAuthorizedAddresses(dsaAddress);
-      // console.log(data);
-      const ownrs = [];
-      data.forEach((owner, index) => ownrs.push({id:index, address:owner}));
-      setOwners(ownrs);
-      setDisplayOwners(ownrs);
-      setTotalSize(ownrs.length);
-      setAreOwnersReceived(true);
-    }
-    catch(err) {
-      console.log(err);
-    }
-  }
-  useEffect(() => {
-    if(owners.length===0)
-      updateOwners();
-  },[areOwnersReceived]);
 
   // updates the owners to be displayed based on search filter text
   const updateDisplayOwners = () => {
-      if(searchText==="") {
-        setDisplayOwners(owners);
-        setTotalSize(owners.length);
+    console.log('Triggered');
+    if(searchText==="") {
+      setDisplayOwners(owners);
+      setTotalSize(owners.length);
+    }
+    else {
+      const ownersToDisplay=[];
+      for(const owner of owners) {
+        if(owner.address.includes(searchText))
+          ownersToDisplay.push(owner);
       }
-      else {
-        const ownersToDisplay=[];
-        for(const owner of owners) {
-          if(owner.address.includes(searchText))
-            ownersToDisplay.push(owner);
-        }
-        setDisplayOwners(ownersToDisplay);
-        setTotalSize(ownersToDisplay.length);
-      }
-      const options = {custom:true, sizePerPage:pageSize, totalSize};
-      setOptions(options);
+      setDisplayOwners(ownersToDisplay);
+      setTotalSize(ownersToDisplay.length);
+    }
+    const options = {custom:true, sizePerPage:pageSize, totalSize};
+    setOptions(options);
   };
+
   useEffect(() => {
-    if(areOwnersReceived && searchText!=="")
+    if(owners.length!==0)
       updateDisplayOwners();
-  }, [searchText, totalSize]);
-
-
+  }, [displayOwners.length, totalSize]);
+  
   let table = createRef();
 
   const handlePrevPage = ({ page, onPageChange }) => () => {
@@ -130,12 +106,12 @@ const OwnersTable = ({ pageSize, totalSize, searchText, setTotalSize, dsaAddress
                 {...paginationTableProps}
               />
             </div>
-            {totalSize>10 &&
-            <Row noGutters className="px-1 py-3">
-              <Col className="pl-3 fs--1">
+            {owners.length>4 &&
+            <Row noGutters className="px-1 py-2">
+              <Col className="pl-1 fs--1 py-1">
                 <CustomTotal {...paginationProps} lastIndex={lastIndex} />
               </Col>
-              <Col xs="auto" className="pr-3">
+              <Col xs="auto" className="pr-1">
                 <ButtonIcon
                   color={paginationProps.page === 1 ?'light' : null}
                   size="xs"
@@ -155,7 +131,7 @@ const OwnersTable = ({ pageSize, totalSize, searchText, setTotalSize, dsaAddress
                   onClick={handleNextPage(paginationProps)}
                   disabled={lastIndex >= paginationProps.totalSize}
                   className="pagination-page-num-btn font-weight-800"
-                  style={{fontWeight:600}}
+                  style={{fontWeight:600, marginLeft:0}}
                 >
                 </ButtonIcon> 
               </Col>

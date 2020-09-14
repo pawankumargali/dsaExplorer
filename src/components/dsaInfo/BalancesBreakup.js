@@ -1,21 +1,30 @@
-import React, { useState, Fragment, useContext } from 'react';
+import React, { useState, useEffect, Fragment, useContext } from 'react';
 import FalconCardHeader from '../common/FalconCardHeader';
 import { InputGroup, Card, CardBody } from 'reactstrap';
 import SearchBox from '../dashboard/SearchBox';
 import BalancesBreakupTable from './BalancesBreakupTable';
-import BalancesDataProvider from  './BalancesDataProvider';
+import { BalancesDataContext } from '../../context/Context';
 
 
 const BalancesBreakup = ({dsaAddress}) => {
   
+  const { balances, setBalances, initBalances } = useContext(BalancesDataContext);
   const [totalSize, setTotalSize] = useState(0);
   const pageSize = 10;
   const [tokenSearchText, setTokenSearchText] = useState('');
-  const [hideBalBreakup, setHideBalBreakup] = useState(false);
+
+  useEffect(() => {
+    initBalances(dsaAddress);
+  }, [dsaAddress]);
+  
+  useEffect(() => {
+    if(balances.length===0) 
+      initBalances(dsaAddress);
+  },[balances.length]);
 
   return (
     <Fragment>
-    {!hideBalBreakup && 
+    {balances.length!==0 && 
     <Card className="dsa-page-lg-row-2">
       <FalconCardHeader title="Balances Breakup" titleTag="h6" light={false}>
       {totalSize>10 && 
@@ -32,16 +41,16 @@ const BalancesBreakup = ({dsaAddress}) => {
       }
       </FalconCardHeader>
       <CardBody className="p-0 pb-3">
-        <BalancesDataProvider>
+        {/* <BalancesDataProvider> */}
             <BalancesBreakupTable 
             pageSize={pageSize}
             totalSize={totalSize}
             searchText={tokenSearchText}
             setTotalSize={setTotalSize}
             dsaAddress={dsaAddress}
-            setHideBalBreakup = {setHideBalBreakup}
+            balances={balances}
             />
-        </BalancesDataProvider>
+        {/* </BalancesDataProvider> */}
       </CardBody>
  
     </Card>

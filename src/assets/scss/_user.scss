@@ -117,8 +117,8 @@
 
 
 /*******************************************DSA PAGE******************************************************/
-.dsa-page-lg-row-1 { height: 27vh; }
-.dsa-page-lg-row-2 { height: 55vh; }
+.dsa-page-lg-row-1 { height: 200px; }
+.dsa-page-lg-row-2 { height: 370px; }
 @media(max-width:991px) {
     .dsa-page-lgrow-1, .dsa-page-lg-row-2 {height:auto};
 }
@@ -161,7 +161,7 @@
 
 #bals-breakup-chart, .supply-borrow-status-col {
     position: relative;
-    top:-15px;
+    top:-12px;
     right:0px;
 
 }
@@ -170,10 +170,15 @@
     .supply-borrow-status-col {
         top:12px;
     }
+     .supply-borrow-progress-bar { 
+        width: 100% !important; 
+    }
+}
+
+@media(max-width:400px) {
     .supply-borrow-progress-bar { 
         width: 100% !important; 
     }
-
 }
 
 
@@ -188,10 +193,18 @@
     margin-bottom: 10px;
 }
 
-#all-owners-search-form, #all-balances-search-form, #dsa-txs-search-form {
+
+#all-balances-search-form, #dsa-txs-search-form {
     input {
         width:100%;
         height:28px;
     }
     .search-box-icon { width: 12px; }
+}
+
+.all-owners-search-form {
+    input {
+        width:'30px';
+        height:'10px';
+    }
 }

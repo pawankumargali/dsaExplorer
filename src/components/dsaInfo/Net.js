@@ -59,11 +59,12 @@ const Net = ({ values }) => {
             <span className="mx-2">{numberFormatter(supply.eth-borrow.eth, 2)}</span>
           </Badge>
         </Col>
-        <Col xs="auto" className="pl-0" className="supply-borrow-status-col">
+        <Col sm="auto">
           <SupplyBorrowStatus 
               data={progressBarVals}
               height={30}
               width={300}
+              className="supply-borrow-status-col"
           />
         </Col>
       </Row>

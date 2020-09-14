@@ -9,7 +9,6 @@ import { getAccounts } from '../../helpers/dsaInterface';
 const CustomTotal = ({ sizePerPage, totalSize, page, lastIndex }) =>  {
   if(totalSize===0) 
     return (<span>
-            No matches
           </span>);
   return (<span>
           {(page - 1) * sizePerPage + 1} to {lastIndex > totalSize ? totalSize : lastIndex} of {totalSize} 
@@ -134,7 +133,7 @@ const OwnedDSAsTable = ({ pageSize, totalSize, searchText, setTotalSize, ownerAd
                 {...paginationTableProps}
               />
             </div>
-            {totalSize>10 && 
+            {totalSize>0 && 
             <Row noGutters className="px-1 py-3">
               <Col className="pl-3 fs--1">
                 <CustomTotal {...paginationProps} lastIndex={lastIndex} />
