@@ -1,21 +1,10 @@
-import React, { useContext, useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
+// import PropTypes from 'prop-types';
 import FalconCardHeader from '../common/FalconCardHeader';
-import { Badge, Card, CardBody, Col, Row, Button, Collapse, CardFooter, Progress } from 'reactstrap';
+import { Badge, Card, CardBody, Progress } from 'reactstrap';
 import Flex from '../common/Flex';
-import { numberFormatter, isIterableArray, themeColors, getPosition, getGrays, colors } from '../../helpers/utils';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import AppContext, { SearchAddressContext } from '../../context/Context';
-import { getBalances } from '../../dsaInterface';
-import { getTokenPriceInUSD, getEthPriceInUSD, getSupportedTokenPricesInUSD } from '../../coinExPrices';
-import ReactEchartsCore from 'echarts-for-react/lib/core';
-import echarts from 'echarts/lib/echarts';
-import 'echarts/lib/chart/bar';
-import 'echarts/lib/component/tooltip';
-import ethIcon from '../../assets/img/tokens/eth.svg';
-import tokens from '../../tokens';
-import BalanceItem from './BalanceItem';
-import { update } from 'lodash';
+// import AppContext from '../../context/Context';
+
 
 
 
@@ -23,7 +12,7 @@ import { update } from 'lodash';
 
 const Status = ({ position, values, currentAsset, currentVault }) => {
 
-  const { isDark, currency } = useContext(AppContext);
+  // const { isDark, currency } = useContext(AppContext);
   const [status, setStatus] = useState({current:0, liquidation:100});
 
   const updateStatus = () => {

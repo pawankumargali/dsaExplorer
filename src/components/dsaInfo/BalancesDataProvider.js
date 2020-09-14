@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { getBalances } from '../../dsaInterface';
-import { getTokenPriceInUSD, getEthPriceInUSD, getSupportedTokenPricesInUSD } from '../../coinExPrices';
+import { getBalances } from '../../helpers/dsaInterface';
+import { getSupportedTokenPricesInUSD } from '../../helpers/coinExPrices';
 import { BalancesDataContext } from '../../context/Context';
-import tokens from '../../tokens';
+import tokens from '../../helpers/tokens';
 
 const BalancesProvider = ({ children }) => {
 

@@ -1,15 +1,9 @@
-import React, { useState, useEffect, Fragment, useContext } from 'react';
-// import PurchasesTable from './PurchasesTable';
+import React, { useState, Fragment, useContext } from 'react';
 import FalconCardHeader from '../common/FalconCardHeader';
-import { InputGroup, CustomInput, Button, Card, CardBody } from 'reactstrap';
-// import RecentTxsDataProvider from './RecentTxsDataProvider';
-// import RecentTxsDataProvider from './RecentTxsDataProvider';
-import ButtonIcon from '../common/ButtonIcon';
-import { Link } from 'react-router-dom';
-import SearchBox from '../dashboard-alt/SearchBox';
+import { InputGroup, Card, CardBody } from 'reactstrap';
+import SearchBox from '../dashboard/SearchBox';
 import BalancesBreakupTable from './BalancesBreakupTable';
 import BalancesDataProvider from  './BalancesDataProvider';
-import { BalancesDataContext } from '../../context/Context';
 
 
 const BalancesBreakup = ({dsaAddress}) => {

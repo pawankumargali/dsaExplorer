@@ -2,14 +2,13 @@ import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 // import FalconCardHeader from '../common/FalconCardHeader';
 import { Card, CardBody, Col } from 'reactstrap';
-import { getTokenPriceInUSD, getEthPriceInUSD } from '../../coinExPrices';
-import tokens from '../../tokens';
-
+import { getTokenPriceInUSD, getEthPriceInUSD } from '../../helpers/coinExPrices';
+import tokens from '../../helpers/tokens';
 import TokenSupplyBorrowTable from './TokenSupplyBorrowTable';
 
 
 
-const TokenSupplyBorrowDetails = ({ position, currentAsset, currentVault, values }) => {
+const TokenSupplyBorrowDetails = ({ position, currentAsset, currentVault }) => {
   
   const [tokenDetails, setTokenDetails] = useState([]);
   const [supplyTokens, setSupplyTokens] = useState([]);
@@ -53,7 +52,7 @@ const TokenSupplyBorrowDetails = ({ position, currentAsset, currentVault, values
       for(const token in position) {
         if(!position[token].supply && !position[token].borrow) continue;
         let {supply, borrow, supplyYield, borrowYield} = position[token];
-        console.log(position[token]);
+        // console.log(position[token]);
         supply = isNaN(supply) ? 0 : supply;
         borrow = isNaN(borrow) ? 0 : borrow;
         if(!tokenPricesInUSD[token]) 
@@ -88,9 +87,7 @@ const TokenSupplyBorrowDetails = ({ position, currentAsset, currentVault, values
     <Fragment>
     {supplyTokens.length!==0 &&
       <Col lg={6} className="col-xxl-3 mb-1 pl-md-2 pr-md-2 mx-auto">
-        {values.supply.usd!==0 &&
         <h5 className="mt-2 mb-1 pb-0 pl-md-2">{labels[currentAsset].supply}</h5>
-        }
       <Card>
         <CardBody>
               <TokenSupplyBorrowTable 
@@ -103,9 +100,7 @@ const TokenSupplyBorrowDetails = ({ position, currentAsset, currentVault, values
     }
     {borrowTokens.length!==0 &&
       <Col lg={6} className="col-xxl-3 mb-1 pl-md-2 pr-md-2 mx-auto">
-        {values.borrow.usd!==0 &&
         <h5 className="mt-2 mb-1 pb-0 pl-md-2">{labels[currentAsset].borrow}</h5>
-        }
       <Card>
         <CardBody>
               <TokenSupplyBorrowTable 

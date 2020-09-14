@@ -1,19 +1,13 @@
 import React, { useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Card, CardBody, CardHeader, Row, Col } from 'reactstrap';
-import { Link } from 'react-router-dom';
-import Flex from '../common/Flex';
+import { getPosition, getGrays, numberFormatter } from '../../helpers/utils';
+import AppContext from '../../context/Context';
+import { getEthPriceInUSD } from '../../helpers/coinExPrices';
 import echarts from 'echarts/lib/echarts';
 import ReactEchartsCore from 'echarts-for-react/lib/core';
-import { getPosition, getGrays, numberFormatter } from '../../helpers/utils';
-import AppContext, { PositionsContext } from '../../context/Context';
-
 import 'echarts/lib/chart/bar';
 import 'echarts/lib/component/tooltip';
 import 'echarts/lib/component/legend';
-import FalconCardHeader from '../common/FalconCardHeader';
-import { getTokenPriceInUSD, getEthPriceInUSD, getSupportedTokenPricesInUSD } from '../../coinExPrices';
-import tokens from '../../tokens';
 
 
 
@@ -160,10 +154,10 @@ const PositionsBreakupBarChart = ({ positions, arePositionsSet, getTotalMakerCol
   );
 };
 
-// TopProducts.propTypes = {
-//   data: PropTypes.array.isRequired,
-//   colors: PropTypes.arrayOf(PropTypes.string).isRequired,
-//   className: PropTypes.string
-// };
+PositionsBreakupBarChart.propTypes = {
+  positions: PropTypes.object.isRequired, 
+  arePositionsSet: PropTypes.bool.isRequired, 
+  getTotalMakerColAndDebtInUSD: PropTypes.func.isRequired,
+};
 
 export default PositionsBreakupBarChart;

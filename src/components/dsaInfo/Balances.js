@@ -1,19 +1,15 @@
 import React, { useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import FalconCardHeader from '../common/FalconCardHeader';
-import { Badge, Card, CardBody, Col, Row, Button, Collapse, CardFooter } from 'reactstrap';
+import { Badge, Card, CardBody, Col, Row } from 'reactstrap';
 import Flex from '../common/Flex';
-import { numberFormatter, isIterableArray, themeColors, getPosition, getGrays, colors } from '../../helpers/utils';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import AppContext, { SearchAddressContext, BalancesDataContext } from '../../context/Context';
-import { getBalances } from '../../dsaInterface';
-import { getTokenPriceInUSD, getEthPriceInUSD, getSupportedTokenPricesInUSD } from '../../coinExPrices';
+import { numberFormatter, getPosition, getGrays } from '../../helpers/utils';
+import AppContext, { BalancesDataContext } from '../../context/Context';
 import ReactEchartsCore from 'echarts-for-react/lib/core';
 import echarts from 'echarts/lib/echarts';
 import 'echarts/lib/chart/bar';
 import 'echarts/lib/component/tooltip';
 import ethIcon from '../../assets/img/tokens/eth.svg';
-import BalanceItem from './BalanceItem';
 
 
 const getOption = (data, isDark) => {
@@ -64,8 +60,6 @@ const Balances = ({ dsaAddress }) => {
   const { isDark, currency } = useContext(AppContext);
   const {balances, setBalances, initBalances } = useContext(BalancesDataContext);
   const [total, setTotal]=useState({usd:0, eth:0});
-
-  const [collapsed, setCollapsed] = useState(true);
 
  const updateTotal = async () => {      
     let totalEth=0;
@@ -123,24 +117,11 @@ const Balances = ({ dsaAddress }) => {
         </Button>
       </div>  */}
         </Row> 
-
       </CardBody>
-      <Collapse isOpen={!collapsed}>
-      <CardFooter id="bal-total-card-footer">
-      {isIterableArray(balances) && balances.map(balance =>
-        <div className="fs--1" key={balance.token} style={{marginBottom:'10px'}}>
-          <BalanceItem 
-            {...balance}
-            totalUSD={total.usd}
-          />
-        </div>
-      )}
-      </CardFooter>
-      </Collapse>
     </Card>
   );
 };
 
-// TotalOrder.propTypes = { data: PropTypes.array.isRequired };
+Balances.propTypes = { dsaAddress: PropTypes.string.isRequired };
 
 export default Balances;

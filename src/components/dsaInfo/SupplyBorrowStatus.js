@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Progress } from 'reactstrap';
-// import Flex from '../common/Flex';
 import { isIterableArray } from '../../helpers/utils';
 import SupplyBorrowStatusProgressBar from './SupplyBorrowStatusProgressBar';
-// import StorageStatusDot from './StorageStatusDot';
 
 const SupplyBorrowStatus = ({ data, className, height, width }) => {
   const total = data.map(d => d.size).reduce((total, currentValue) => total + currentValue, 0);

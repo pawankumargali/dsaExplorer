@@ -1,8 +1,8 @@
 import React, { useContext, useState, useEffect, Fragment } from 'react';
 import { Col, Row } from 'reactstrap';
 import { PositionsContext } from '../../context/Context';
-import { getTokenPriceInUSD, getEthPriceInUSD } from '../../coinExPrices';
-import tokens from '../../tokens';
+import { getTokenPriceInUSD, getEthPriceInUSD } from '../../helpers/coinExPrices';
+import tokens from '../../helpers/tokens';
 import Asset from './Asset';
 import Net from './Net';
 import Status from './Status';
@@ -71,13 +71,14 @@ const DetailedPosition = ({ dsaAddress }) => {
         return;
       }
       token=token.toLowerCase();
-      if(!tokenPricesInUSD[token]) await getTokenPriceInUSD(tokens[token].address);
+      if(!tokenPricesInUSD[token]) tokenPricesInUSD[token] = await getTokenPriceInUSD(tokens[token].address);
       const colInEth = (token==='eth') ? col : col*(tokenPricesInUSD[token]/tokenPricesInUSD['eth']);
       const debtInEth = debt*(tokenPricesInUSD['dai']/tokenPricesInUSD['eth']);
       vals.supply.eth=colInEth;
       vals.borrow.eth=debtInEth;
       vals.supply.usd = colInEth*tokenPricesInUSD['eth'];
       vals.borrow.usd = debtInEth*tokenPricesInUSD['eth']; 
+      // console.log(vals);
       setValues(vals);
       setAreValsSet(true);    
     }
@@ -131,7 +132,7 @@ const DetailedPosition = ({ dsaAddress }) => {
     <Fragment>
     <h5 className="mt-4 mb-1 pb-0 pl-md-2">Detailed Position</h5>
     <Row noGutters className="mt-2 mb-1"> 
-      <Col lg={currentAsset==='maker'? 2:3} className="col-xxl-3 mb-2 pl-md-1 pr-md-0">
+      <Col lg={currentAsset==='maker'? 2:3} md={currentAsset==='maker' ? 6:12} className="col-xxl-3 mb-2 pl-md-1 pr-md-0">
         <Asset 
           assets={assets}
           currentAsset={currentAsset}
@@ -142,7 +143,7 @@ const DetailedPosition = ({ dsaAddress }) => {
       </Col>
 
       {currentAsset==='maker' && makerVaults.length!==0 &&
-        <Col lg={2} className="col-xxl-3 mb-2 pl-md-2 pr-md-0">
+        <Col lg={2} md={6} className="col-xxl-3 mb-2 pl-md-2 pr-md-0">
           <MakerVault 
             vaults={makerVaults}
             currentVault={currentMakerVault}
@@ -152,13 +153,13 @@ const DetailedPosition = ({ dsaAddress }) => {
       }
       
       <Col className="col-xxl-3 mb-2 pl-md-2 pr-md-0">
-        <Net 
+        <Net lg="auto" md={8}
           values={values}
         />
       </Col>
 
       {areValsSet &&
-      <Col lg={3} className="col-xxl-3 mb-2 pl-md-2 pr-md-0">
+      <Col lg={3} md={4} className="col-xxl-3 mb-2 pl-md-2 pr-md-0">
        <Status 
         position={position}
         values={values}
@@ -176,7 +177,6 @@ const DetailedPosition = ({ dsaAddress }) => {
         position={position}
         currentAsset={currentAsset}
         currentVault={currentMakerVault}
-        values={values}
       />
     </Row>
     }

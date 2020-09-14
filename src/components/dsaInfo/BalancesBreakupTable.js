@@ -2,15 +2,11 @@ import React, { Fragment, createRef, useState, useEffect, useContext } from 'rea
 import paginationFactory, { PaginationProvider } from 'react-bootstrap-table2-paginator';
 import BootstrapTable from 'react-bootstrap-table-next';
 import Badge from 'reactstrap/es/Badge';
-import { Button, Col, Row } from 'reactstrap';
+import { Col, Row } from 'reactstrap';
 import ButtonIcon from '../common/ButtonIcon';
-import { isIterableArray } from '../../helpers/utils';
-import { themeColors } from '../../helpers/utils';
 import AppContext, { BalancesDataContext } from '../../context/Context';
-import axios from 'axios';
-import { getBalances, getAuthorizedAddresses } from '../../dsaInterface';
 import { numberFormatter } from '../../helpers/utils';
-import tokens from '../../tokens';
+import tokens from '../../helpers/tokens';
 
 
 

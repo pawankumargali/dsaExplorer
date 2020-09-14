@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PositionsContext } from '../../context/Context';
-import { getCompoundPosition, getMakerPosition, getAavePosition, getDydxPosition } from '../../dsaInterface';
+import { getCompoundPosition, getMakerPosition, getAavePosition, getDydxPosition } from '../../helpers/dsaInterface';
 
 const PositionsDataProvider = ({ children }) => {
 

@@ -1,15 +1,10 @@
 import React, { Fragment, createRef, useState, useEffect, useContext } from 'react';
 import paginationFactory, { PaginationProvider } from 'react-bootstrap-table2-paginator';
 import BootstrapTable from 'react-bootstrap-table-next';
-import Badge from 'reactstrap/es/Badge';
-import { Button, Col, Row } from 'reactstrap';
+import { Col, Row } from 'reactstrap';
 import ButtonIcon from '../common/ButtonIcon';
-import { isIterableArray } from '../../helpers/utils';
-import { themeColors } from '../../helpers/utils';
-import AppContext, { RecentTxsDataContext } from '../../context/Context';
-import axios from 'axios';
-import ethIcon from '../../assets/img/tokens/eth.svg';
-import { getBalances, getAuthorizedAddresses, getAccounts } from '../../dsaInterface';
+import AppContext from '../../context/Context';
+import { getAccounts } from '../../helpers/dsaInterface';
 
 const CustomTotal = ({ sizePerPage, totalSize, page, lastIndex }) =>  {
   if(totalSize===0) 

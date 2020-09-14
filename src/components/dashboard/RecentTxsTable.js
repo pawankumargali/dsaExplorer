@@ -2,12 +2,20 @@ import React, { Fragment, createRef, useState, useEffect, useContext } from 'rea
 import paginationFactory, { PaginationProvider } from 'react-bootstrap-table2-paginator';
 import BootstrapTable from 'react-bootstrap-table-next';
 import Badge from 'reactstrap/es/Badge';
-import { Col, Row } from 'reactstrap';
+import { Button, Col, Row } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import ButtonIcon from '../common/ButtonIcon';
-import { hashFormatter } from '../../helpers/utils';
-import AppContext from '../../context/Context';
+import { isIterableArray } from '../../helpers/utils';
+import { themeColors } from '../../helpers/utils';
+import AppContext, { RecentTxsDataContext } from '../../context/Context';
 import axios from 'axios';
 import ethIcon from '../../assets/img/tokens/eth.svg';
+import {getDsaAddressById } from '../../helpers/dsaInterface';
+import { hashFormatter } from '../../helpers/utils';
+
+
+
+
 
 const CustomTotal = ({ sizePerPage, totalSize, page, lastIndex }) =>  {
   if(totalSize===0) 
@@ -25,8 +33,21 @@ const txHashFormatter = txHash => (
     target="_blank"
     rel="noopener noreferrer"
   > 
-    {hashFormatter(txHash,10)}
+    {hashFormatter(txHash, 10)}
   </a>
+);
+
+const dsaAddressForId = async dsaId  => { 
+  const address=await getDsaAddressById(dsaId);
+  return `dsa/${address}`;
+}
+const dsaIdFormatter = dsaId => (
+  <Link
+    to={`/dsa/${dsaId}`}
+    className="font-weight-semi-bold"
+  > 
+    {dsaId}
+  </Link>
 );
 
 const blockNumberFormatter = blockNo => (
@@ -79,7 +100,7 @@ const toAddressFormatter = address => {
       target="_blank"
       rel="noopener noreferrer"
     > 
-      {hashFormatter(address,10)}
+    {hashFormatter(address,10)}
     </a>
   )
 }
@@ -107,6 +128,14 @@ const columns = [
     dataField: 'hash',
     text: 'Txn Hash',
     formatter: txHashFormatter,
+    classes: 'border-0 align-middle',
+    headerClasses: 'border-0',
+    sort: false,
+  },
+  {
+    dataField: 'dsaId',
+    text: 'DSA Id',
+    formatter: dsaIdFormatter,
     classes: 'border-0 align-middle',
     headerClasses: 'border-0',
     sort: false,
@@ -156,28 +185,36 @@ const columns = [
   }
 ];
 
-const PurchasesTable = ({ pageSize, pageNums, totalSize, txSearchText, setTotalSize, dsaAddress }) => {
+const RecentTxsTable = ({ pageSize, pageNums, totalSize, isAllRecentTxsPage, txSearchText, setPageSize, setTotalSize }) => {
 
 
   const { isDark } = useContext(AppContext);
   // stores all txs fetched from api
-  const [txs, setTxs] = useState([]);
+  const { txs, setTxs, areTxsReceived, setAreTxsReceived } = useContext(RecentTxsDataContext);
   // stores txs to be displayed based of search filter text
   const [displayTxs, setDisplayTxs] = useState(txs);
   // keeps track of the current page in pagination
   const [currentPage, setCurrentPage] = useState(1);
   // Pagination options
   const [options, setOptions] = useState({custom:true, sizePerPage:pageSize, totalSize});
+  // show numbered pages when search filter is not triggered
+  const [showNumberedPages, setShowNumberedPages] = useState(true);
 
+  // updates showNumberedPages based on search filter text
+  useEffect(() => {
+    if(txSearchText==="") setShowNumberedPages(true);
+    else setShowNumberedPages(false);
+  },[txSearchText])
 
   // fetches data from api and updates txs
   const updateTxs = async () => {
     try {
-      const recentTxUrl = `https://dsa-info.herokuapp.com/api/dsa/tx/recent/${dsaAddress}?key=Er2wUbHQ8hYADskWFk9JQntnf`
+      const recentTxUrl = 'https://dsa-info.herokuapp.com/api/dsa/tx/recent?key=Er2wUbHQ8hYADskWFk9JQntnf'
       const response = await axios.get(recentTxUrl);
       const { data } = response.data;
       setTxs(data);
       setDisplayTxs(data);
+      setAreTxsReceived(true);
     }
     catch(err) {
       console.log(err);
@@ -186,7 +223,7 @@ const PurchasesTable = ({ pageSize, pageNums, totalSize, txSearchText, setTotalS
   useEffect(() => {
     if(txs.length===0)
       updateTxs();
-  },[txs.length]);
+  },[areTxsReceived]);
 
   // updates the txs to be displayed based on search filter text
   const updateDisplayTxs = () => {
@@ -197,12 +234,12 @@ const PurchasesTable = ({ pageSize, pageNums, totalSize, txSearchText, setTotalS
       else {
         const txsToDisplay=[];
         for(const tx of txs) {
-          let { hash, from, to } = tx;
+          let { hash, from, to, dsaId } = tx;
           hash=hash.toLowerCase();
           from=from.toLowerCase();
           to=to.toLowerCase();
           const searchText=txSearchText.toLowerCase();
-          if(hash.includes(searchText) || from.includes(searchText) || to.includes(searchText))
+          if(hash.includes(searchText) || from.includes(searchText) || to.includes(searchText) || dsaId.toString().includes(searchText))
             txsToDisplay.push(tx);
         }
         setDisplayTxs(txsToDisplay);
@@ -213,7 +250,7 @@ const PurchasesTable = ({ pageSize, pageNums, totalSize, txSearchText, setTotalS
   };
   useEffect(() => {
     updateDisplayTxs();
-  }, [txs.length, txSearchText, pageSize, totalSize]);
+  }, [areTxsReceived, txSearchText, pageSize, totalSize]);
 
 
   let table = createRef();
@@ -272,6 +309,18 @@ const PurchasesTable = ({ pageSize, pageNums, totalSize, txSearchText, setTotalS
                 >
                   
                 </ButtonIcon>
+                {showNumberedPages && isIterableArray(pageNums) && pageNums.map(page => 
+                  <Button
+                    key={page}
+                    color={isDark ? themeColors.light : themeColors.primary}
+                    size="xs"
+                    onClick={handlePageSelection(paginationProps, page)}
+                    className="pagination-page-num-btn d-none d-lg-inline-flex"
+                    style={(page==currentPage) ? (isDark ? {backgroundColor:themeColors.light, color:themeColors.primary} : {backgroundColor:themeColors.primary, color:themeColors.light}): {} }
+                  >
+                    {page}
+                  </Button>
+                )}
                 <ButtonIcon
                   icon="chevron-right"
                   color={lastIndex >= paginationProps.totalSize ? 'light': null}
@@ -291,4 +340,4 @@ const PurchasesTable = ({ pageSize, pageNums, totalSize, txSearchText, setTotalS
   );
 };
 
-export default PurchasesTable;
+export default RecentTxsTable;

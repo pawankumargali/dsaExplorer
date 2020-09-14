@@ -1,10 +1,8 @@
 import React, { createRef  } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import Badge from 'reactstrap/es/Badge';
-// import { Button, Col, Row } from 'reactstrap';
-// import ButtonIcon from '../common/ButtonIcon';
 import { numberFormatter } from '../../helpers/utils';
-import tokens from '../../tokens';
+import tokens from '../../helpers/tokens';
 import Flex from '../common/Flex';
 
 
@@ -18,7 +16,7 @@ import Flex from '../common/Flex';
 // };
 
 const tokenNameFormatter = token => (
-    <Flex justify="center" align="center" style={{maxWidth:'150px'}}>
+    <Flex justify="start" align="center" style={{maxWidth:'150px'}}>
         <img src={tokens[token].icon} alt={token} style={{width:'20px', marginRight:'10px'}}/>
         <span style={{lineHeight:'25px', fontWeight:'700', fontSize:'0.9rem'}}>{tokens[token].name}</span>
     </Flex>

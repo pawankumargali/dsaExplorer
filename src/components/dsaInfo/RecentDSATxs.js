@@ -1,12 +1,8 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState } from 'react';
 import RecentDSATxsTable from './RecentDSATxsTable';
 import FalconCardHeader from '../common/FalconCardHeader';
-import { InputGroup, CustomInput, Button, Card, CardBody } from 'reactstrap';
-// import RecentTxsDataProvider from './RecentTxsDataProvider';
-// import RecentTxsDataProvider from './RecentTxsDataProvider';
-// import ButtonIcon from '../common/ButtonIcon';
-// import { Link } from 'react-router-dom';
-import SearchBox from '../dashboard-alt/SearchBox';
+import { InputGroup, Card, CardBody } from 'reactstrap';
+import SearchBox from '../dashboard/SearchBox';
 
 
 const RecentDSATxs = ({ dsaAddress }) => {

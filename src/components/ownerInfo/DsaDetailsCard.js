@@ -1,18 +1,9 @@
-import React, { Fragment, useContext, useEffect, useState } from 'react';
-// import { Link } from 'react-router-dom';
-import { Col, Row, Card } from 'reactstrap';
-// import ButtonIcon from '../common/ButtonIcon';
-
-// import Flex from '../common/Flex';
+import React, { Fragment } from 'react';
+import { Col, Row } from 'reactstrap';
 import NetPositionCard from '../dsaInfo/NetPositionCard';
 import PositionsBreakupChart from '../dsaInfo/PositionsBreakupChart';
 import Balances from '../dsaInfo/Balances';
 import BalancesBreakup from '../dsaInfo/BalancesBreakup';
-// import DetailedPosition from './DetailedPosition';
-// import Owners from './Owners';
-// import RecentDSATxs from '../dsaInfo/RecentDSATxs';
-// import FalconCardHeader from '../common/FalconCardHeader';
-
 import PositionsDataProvider from '../dsaInfo/PositionsDataProvider';
 import BalancesDataProvider from '../dsaInfo/BalancesDataProvider';
 import DsaTitleCard from './DsaTitleCard';

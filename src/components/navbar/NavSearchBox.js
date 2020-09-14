@@ -1,12 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Form, Input } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { SearchAddressContext } from '../../context/Context';
-import {getDsaAddressById, getGlobalDsaCount,getDsaIdByAddress, getAccounts } from '../../dsaInterface';
+import { getAccounts } from '../../helpers/dsaInterface';
 
 const NavSearchBox = ({icon, placeholder, className, history }) =>  {
 
-  // const { searchAddress, setSearchAddress } = useContext(SearchAddressContext);
   const [searchAddress, setSearchAddress] = useState('');
 
   const handlePageRedirect = async e => {

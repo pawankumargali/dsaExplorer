@@ -1,25 +1,18 @@
 import React, { useContext, useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Card, CardBody, CardHeader, Row, Col } from 'reactstrap';
-import { Link } from 'react-router-dom';
-import Flex from '../common/Flex';
-import echarts from 'echarts/lib/echarts';
-import ReactEchartsCore from 'echarts-for-react/lib/core';
-import { getPosition, getGrays } from '../../helpers/utils';
-import AppContext, { PositionsContext } from '../../context/Context';
-
+import { Card, CardBody } from 'reactstrap';
+import { PositionsContext } from '../../context/Context';
 import 'echarts/lib/chart/bar';
 import 'echarts/lib/component/tooltip';
 import 'echarts/lib/component/legend';
 import FalconCardHeader from '../common/FalconCardHeader';
-import { getTokenPriceInUSD, getEthPriceInUSD, getSupportedTokenPricesInUSD } from '../../coinExPrices';
-import tokens from '../../tokens';
-
+import { getTokenPriceInUSD, getEthPriceInUSD } from '../../helpers/coinExPrices';
+import tokens from '../../helpers/tokens';
 import PositionsBreakupBarChart from './PositionsBreakupBarChart';
 import PositionsBreakupPieChart from './PositionsBreakupPieChart';
 
 
-const PositionsChart = ({ className, dsaAddress }) => {
+const PositionsBreakupChart = ({ dsaAddress }) => {
 
   const { positions, arePositionsReceived, setArePositionsReceived, initPositions } = useContext(PositionsContext);
   const [arePositionsSet, setArePositionsSet] = useState(false);
@@ -88,10 +81,8 @@ const PositionsChart = ({ className, dsaAddress }) => {
   );
 };
 
-// TopProducts.propTypes = {
-//   data: PropTypes.array.isRequired,
-//   colors: PropTypes.arrayOf(PropTypes.string).isRequired,
-//   className: PropTypes.string
-// };
+PositionsBreakupChart.propTypes = {
+  dsaAddress: PropTypes.string.isRequired
+};
 
-export default PositionsChart;
+export default PositionsBreakupChart;

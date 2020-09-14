@@ -1,15 +1,14 @@
 import React, { useContext, useState, useEffect } from 'react';
 import FalconCardHeader from '../common/FalconCardHeader';
+import PropTypes from 'prop-types';
 import { Badge, Card, CardBody, Col, Row } from 'reactstrap';
 import Flex from '../common/Flex';
 import { numberFormatter } from '../../helpers/utils';
 import AppContext, { PositionsContext } from '../../context/Context';
-import { getTokenPriceInUSD, getEthPriceInUSD } from '../../coinExPrices';
-import tokens from '../../tokens';
+import { getTokenPriceInUSD, getEthPriceInUSD } from '../../helpers/coinExPrices';
+import tokens from '../../helpers/tokens';
 import SupplyBorrowStatus from './SupplyBorrowStatus';
 import SupplyBorrowStatusDot from './SupplyBorrowStatusDot';
-
-// const positionNames = ['compound','aave','maker','dydx'];
 
 const NetPositionCard = ({ dsaAddress }) => {
   // console.log(dsaAddress);
@@ -151,43 +150,12 @@ const NetPositionCard = ({ dsaAddress }) => {
               className="supply-borrow-status-col"
           />
         </Col>
-    </Row>
-          {/* <PositionsDataProvider>
-            <OverallNetPosition 
-              dsaAddress={dsaAddress}    
-            />
-          </PositionsDataProvider> */}
-          {/* {isPreview &&
-          <div className="card-collapsible-btn-div">    
-              <Button color="link" block onClick={() => setCollapsed(!collapsed)}>
-              {collapsed ? 'view' : 'less'}
-              <FontAwesomeIcon icon="chevron-up" className="ml-1 fs--2" transform={collapsed ? 'rotate-180' : ''} />
-              </Button>
-          </div>} */}
+      </Row>
       </CardBody>
-
-
-      {/* <Collapse isOpen={!collapsed}>
-      <CardFooter id="net-position-card-footer">
-        <PositionsDataProvider>
-          <MakerNetPositionItem 
-            key={'maker'}
-            dsaAddress={dsaAddress}
-          />
-          {positionNames.filter(pos => pos!=='maker').map(pos =>   
-              <NetPositionItem
-                key={pos}
-                dsaAddress={dsaAddress}
-                name={pos}
-              />
-          )}
-        </PositionsDataProvider>
-      </CardFooter>
-      </Collapse> */}
     </Card>
   );
 };
 
-// TotalOrder.propTypes = { data: PropTypes.array.isRequired };
+NetPositionCard.propTypes = { dsaAddress: PropTypes.string.isRequired };
 
 export default NetPositionCard;

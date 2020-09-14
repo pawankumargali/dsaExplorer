@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import { CloseButton, Fade } from '../components/common/Toast';
@@ -6,7 +6,7 @@ import { CloseButton, Fade } from '../components/common/Toast';
 import DashboardLayout from './DashboardLayout';
 import ErrorLayout from './ErrorLayout';
 
-import loadable from '@loadable/component';
+// import loadable from '@loadable/component';
 
 const Layout = () => {
  

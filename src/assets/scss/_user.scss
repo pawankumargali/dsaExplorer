@@ -119,8 +119,8 @@
 /*******************************************DSA PAGE******************************************************/
 .dsa-page-lg-row-1 { height: 27vh; }
 .dsa-page-lg-row-2 { height: 55vh; }
-@media(max-width:768px) {
-    
+@media(max-width:991px) {
+    .dsa-page-lgrow-1, .dsa-page-lg-row-2 {height:auto};
 }
 
 
@@ -176,9 +176,6 @@
 
 }
 
-// @media(max-width: 370px) {
-//     .supply-borrow-progress-bar { width: 100% !important; }
-// }
 
 .owner-address-item {
     margin: 10px auto;

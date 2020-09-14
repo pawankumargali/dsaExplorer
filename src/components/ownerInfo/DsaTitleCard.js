@@ -1,10 +1,10 @@
-import React, { useContext, useState, useEffect, Fragment } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect, Fragment } from 'react';
+// import PropTypes from 'prop-types';
 import FalconCardHeader from '../common/FalconCardHeader';
-import { Badge, Card, CardBody, Col, Row, Button, Collapse, CardFooter } from 'reactstrap';
+import { Card } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import ButtonIcon from '../common/ButtonIcon';
-import {getDsaIdByAddress} from '../../dsaInterface';
+import { getDsaIdByAddress } from '../../helpers/dsaInterface';
 
 const DsaTitleCard = ({ dsaAddress }) => {
 

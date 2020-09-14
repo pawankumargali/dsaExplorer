@@ -9,7 +9,7 @@ import Owners from './Owners';
 import RecentDSATxs from './RecentDSATxs';
 import PositionsDataProvider from './PositionsDataProvider';
 import BalancesDataProvider from './BalancesDataProvider';
-import { getDsaAddressById, getDsaIdByAddress, getGlobalDsaCount } from '../../dsaInterface';
+import { getDsaAddressById, getDsaIdByAddress } from '../../helpers/dsaInterface';
 
 const DsaInfo = ({ match, history }) =>  {
 
@@ -38,6 +38,10 @@ const DsaInfo = ({ match, history }) =>  {
   }
 
   useEffect(() => {
+    if(dsaAddress!=='')
+      setDsaAddress('')
+  }, [dsa])
+  useEffect(() => {
     if(dsaAddress==='')
       updateDsaAddress();
   }, [dsaAddress]);
@@ -61,8 +65,9 @@ const DsaInfo = ({ match, history }) =>  {
             </a>
           </h5>
           
+          {/* md-display owners */}
           <Row noGutters className="my-2">
-            <Col lg={2} className="col-xxl-3 mb-2 pl-md-2 pr-md-2 d-lg-none">
+            <Col md={12} className="col-xxl-3 mb-2 pl-md-2 pr-md-2 d-lg-none">
                 <Owners 
                   dsaAddress={dsaAddress}  
                 />
@@ -76,13 +81,15 @@ const DsaInfo = ({ match, history }) =>  {
               </PositionsDataProvider>
             </Col>
             
-            <Col className="col-xxl-3 mb-2 pl-md-2 pr-md-2">
+            {/* lg-display Balances */}
+            <Col  lg={4} className="col-xxl-3 mb-2 pl-md-2 pr-md-2 d-none d-lg-block">
               <BalancesDataProvider>
                 <Balances 
                   dsaAddress={dsaAddress} 
                 />
               </BalancesDataProvider>
             </Col>
+            {/* lg-display Owners */}
             <Col lg={2} className="col-xxl-3 mb-2 pl-md-2 pr-md-2 d-none d-lg-block">
                 <Owners 
                   dsaAddress={dsaAddress}  
@@ -99,6 +106,15 @@ const DsaInfo = ({ match, history }) =>  {
                   dsaAddress={dsaAddress} 
                 />
               </PositionsDataProvider>
+            </Col>
+
+            {/* md-display balances */}
+            <Col  md={12} className="col-xxl-3 mb-2 pl-md-2 pr-md-2 d-block d-lg-none">
+              <BalancesDataProvider>
+                <Balances 
+                  dsaAddress={dsaAddress} 
+                />
+              </BalancesDataProvider>
             </Col>
 
             <Col lg={6} className="col-xxl-3 mb-2 pl-md-2 pr-md-2">

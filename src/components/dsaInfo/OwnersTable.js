@@ -1,15 +1,11 @@
 import React, { Fragment, createRef, useState, useEffect, useContext } from 'react';
 import paginationFactory, { PaginationProvider } from 'react-bootstrap-table2-paginator';
 import BootstrapTable from 'react-bootstrap-table-next';
-import Badge from 'reactstrap/es/Badge';
-import { Button, Col, Row } from 'reactstrap';
+import { Col, Row } from 'reactstrap';
 import ButtonIcon from '../common/ButtonIcon';
-import { isIterableArray } from '../../helpers/utils';
-import { themeColors } from '../../helpers/utils';
-import AppContext, { RecentTxsDataContext } from '../../context/Context';
-import axios from 'axios';
-import ethIcon from '../../assets/img/tokens/eth.svg';
-import { getBalances, getAuthorizedAddresses } from '../../dsaInterface';
+// import AppContext from '../../context/Context';
+import { getAuthorizedAddresses } from '../../helpers/dsaInterface';
+import { hashFormatter } from '../../helpers/utils'
 import { Link } from 'react-router-dom';
 
 
@@ -27,7 +23,7 @@ const addressFormatter = ownerAddress => (
   <Link to={`../owner/${ownerAddress}`} 
     className="font-weight-semi-bold"
   > 
-    {ownerAddress.substring(0,20)+'...'}
+    {hashFormatter(ownerAddress,16)}
   </Link>
 );
 
@@ -46,7 +42,7 @@ const columns = [
 const OwnersTable = ({ pageSize, totalSize, searchText, setTotalSize, dsaAddress }) => {
 
 
-  const { isDark } = useContext(AppContext);
+  // const { isDark } = useContext(AppContext);
 
   const [owners, setOwners] = useState([]);
   const [areOwnersReceived, setAreOwnersReceived] = useState(false);
@@ -65,6 +61,7 @@ const OwnersTable = ({ pageSize, totalSize, searchText, setTotalSize, dsaAddress
       data.forEach((owner, index) => ownrs.push({id:index, address:owner}));
       setOwners(ownrs);
       setDisplayOwners(ownrs);
+      setTotalSize(ownrs.length);
       setAreOwnersReceived(true);
     }
     catch(err) {
@@ -133,7 +130,7 @@ const OwnersTable = ({ pageSize, totalSize, searchText, setTotalSize, dsaAddress
                 {...paginationTableProps}
               />
             </div>
-            {totalSize>10 && 
+            {totalSize>10 &&
             <Row noGutters className="px-1 py-3">
               <Col className="pl-3 fs--1">
                 <CustomTotal {...paginationProps} lastIndex={lastIndex} />
@@ -162,8 +159,9 @@ const OwnersTable = ({ pageSize, totalSize, searchText, setTotalSize, dsaAddress
                 >
                 </ButtonIcon> 
               </Col>
+              
             </Row>
-            }
+          }
           </Fragment>
         );
       }}
