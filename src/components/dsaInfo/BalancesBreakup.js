@@ -8,9 +8,9 @@ import { BalancesDataContext } from '../../context/Context';
 
 const BalancesBreakup = ({dsaAddress}) => {
   
-  const { balances, setBalances, initBalances } = useContext(BalancesDataContext);
+  const { balances, initBalances } = useContext(BalancesDataContext);
   const [totalSize, setTotalSize] = useState(0);
-  const pageSize = 10;
+  const pageSize = 8;
   const [tokenSearchText, setTokenSearchText] = useState('');
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const BalancesBreakup = ({dsaAddress}) => {
     {balances.length!==0 && 
     <Card className="dsa-page-lg-row-2">
       <FalconCardHeader title="Balances Breakup" titleTag="h6" light={false}>
-      {totalSize>10 && 
+      {balances.length>pageSize && 
         <InputGroup size="sm" className="input-group input-group-sm mt-3">
             <SearchBox 
               icon="filter" 
@@ -41,7 +41,6 @@ const BalancesBreakup = ({dsaAddress}) => {
       }
       </FalconCardHeader>
       <CardBody className="p-0 pb-3">
-        {/* <BalancesDataProvider> */}
             <BalancesBreakupTable 
             pageSize={pageSize}
             totalSize={totalSize}
@@ -50,9 +49,7 @@ const BalancesBreakup = ({dsaAddress}) => {
             dsaAddress={dsaAddress}
             balances={balances}
             />
-        {/* </BalancesDataProvider> */}
       </CardBody>
- 
     </Card>
     }
     </Fragment>

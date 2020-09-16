@@ -4,7 +4,6 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import Badge from 'reactstrap/es/Badge';
 import { Col, Row } from 'reactstrap';
 import ButtonIcon from '../common/ButtonIcon';
-import { BalancesDataContext } from '../../context/Context';
 import { numberFormatter } from '../../helpers/utils';
 import tokens from '../../helpers/tokens';
 
@@ -14,7 +13,6 @@ import tokens from '../../helpers/tokens';
 const CustomTotal = ({ sizePerPage, totalSize, page, lastIndex }) =>  {
   if(totalSize===0) 
     return (<span>
-            No matches
           </span>);
   return (<span>
           {(page - 1) * sizePerPage + 1} to {lastIndex > totalSize ? totalSize : lastIndex} of {totalSize} 
@@ -50,7 +48,7 @@ const tokenAmtInEthFormatter = tokenAmt => (
 )
 
 const tokenAmtPercentageFormatter = tokenPercent => (
-    <Badge pill color="soft-info" className="fs--2 d-lg-block font-weight-semi-bold"> 
+    <Badge pill color="soft-info" className="fs--2 d-lg-block font-weight-semi-bold" style={{width:'45px'}}> 
         {numberFormatter(tokenPercent*100,0)+' %'} 
       </Badge>
 )
@@ -120,7 +118,6 @@ const BalancesBreakupTable = ({ pageSize, totalSize, searchText, setTotalSize, b
   // const { isDark } = useContext(AppContext);
  
   const [displayBalances, setDisplayBalances] = useState([]);
-  const [areDisplayBalsSet, setAreDisplayBalsSet] = useState(false);
   
   // Pagination options
   const [options, setOptions] = useState({custom:true, sizePerPage:pageSize, totalSize});
@@ -130,8 +127,6 @@ const BalancesBreakupTable = ({ pageSize, totalSize, searchText, setTotalSize, b
       if(searchText==="") {
         setDisplayBalances(balances);
         setTotalSize(balances.length);
-        if(balances.length!==0) 
-          setAreDisplayBalsSet(true);
       }
       else {
         const balsToDisplay=[];
@@ -141,8 +136,6 @@ const BalancesBreakupTable = ({ pageSize, totalSize, searchText, setTotalSize, b
         }
         setDisplayBalances(balsToDisplay);
         setTotalSize(balsToDisplay.length);
-        if(balances.length!==0)
-          setAreDisplayBalsSet(true);
         // console.log(balsToDisplay);
       }
       const options = {custom:true, sizePerPage:pageSize, totalSize};
@@ -152,9 +145,9 @@ const BalancesBreakupTable = ({ pageSize, totalSize, searchText, setTotalSize, b
   
 
   useEffect(() => {
-      if(balances.length!==0 && (!areDisplayBalsSet || searchText!==''))  
+      if(balances.length!==0)
         updateDisplayBalances();
-  }, [balances.length, areDisplayBalsSet, searchText, totalSize]);
+  }, [balances.length, searchText, totalSize, displayBalances.length]);
 
 
 
@@ -191,7 +184,7 @@ const BalancesBreakupTable = ({ pageSize, totalSize, searchText, setTotalSize, b
                 {...paginationTableProps}
               />
             </div>
-            {totalSize>10 && 
+            {balances.length>pageSize && 
             <Row noGutters className="px-1 py-3">
               <Col className="pl-3 fs--1">
                 <CustomTotal {...paginationProps} lastIndex={lastIndex} />

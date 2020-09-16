@@ -14,7 +14,7 @@ const RecentDSATxs = ({ dsaAddress }) => {
   return (
     <Card className="my-2">
       <FalconCardHeader title="Recent Transactions" titleTag="h5" light={false}>
-        <InputGroup size="sm" className="input-group input-group-sm d-none d-sm-block">
+        <InputGroup size="sm" className="input-group input-group-sm">
             <SearchBox 
               icon="filter" 
               idName="dsa-txs-search-form" 

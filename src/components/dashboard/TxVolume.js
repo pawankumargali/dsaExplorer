@@ -10,6 +10,7 @@ import 'echarts/lib/component/tooltip';
 import AppContext, { TxVolDataContext } from '../../context/Context';
 import axios from 'axios';
 import ethIcon from '../../assets/img/tokens/eth.svg';
+import { DSA_API_KEY } from '../../config';
 
 const getFormatter= (params) => {
     let {name, value} = params[1]
@@ -99,7 +100,7 @@ const TxVolume = () => {
   const getTxVolData = async () => {
     try {
       if(Object.keys(txVolData).length===0) {
-        const txVolUrl = 'https://dsa-info.herokuapp.com/api/dsa/tx/volume?key=Er2wUbHQ8hYADskWFk9JQntnf';
+        const txVolUrl = `https://dsa-info.herokuapp.com/api/dsa/tx/volume?key=${DSA_API_KEY}`;
         const response = await axios.get(txVolUrl);
         const { data } = response.data;
         setTxVolData(data);

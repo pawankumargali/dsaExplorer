@@ -12,11 +12,12 @@ const Error404 = () => (
       </p>
       <hr />
       <p>
-        Make sure the address is correct and that the page hasn't moved. If you think this is a mistake,
-        <a href="mailto:info@exmaple.com" className="ml-1">
+        Make sure the address is correct and that the page hasn't moved. 
+        {/* If you think this is a mistake,
+        <a href="dsaexplorerv1@gmail.com" className="ml-1">
           contact us
         </a>
-        .
+        . */}
       </p>
       <Link className="btn btn-primary btn-sm mt-3" to="/">
         <FontAwesomeIcon icon="home" className="mr-2" />

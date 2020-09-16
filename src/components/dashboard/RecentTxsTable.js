@@ -12,15 +12,12 @@ import axios from 'axios';
 import ethIcon from '../../assets/img/tokens/eth.svg';
 import {getDsaAddressById } from '../../helpers/dsaInterface';
 import { hashFormatter } from '../../helpers/utils';
-
-
-
-
+import { DSA_API_KEY } from '../../config';
 
 const CustomTotal = ({ sizePerPage, totalSize, page, lastIndex }) =>  {
   if(totalSize===0) 
     return (<span>
-            No matches
+            No txns
           </span>);
   return (<span>
           {(page - 1) * sizePerPage + 1} to {lastIndex > totalSize ? totalSize : lastIndex} of {totalSize} 
@@ -185,7 +182,7 @@ const columns = [
   }
 ];
 
-const RecentTxsTable = ({ pageSize, pageNums, totalSize, isAllRecentTxsPage, txSearchText, setPageSize, setTotalSize }) => {
+const RecentTxsTable = ({ pageSize, pageNums, totalSize, txSearchText, setTotalSize }) => {
 
 
   const { isDark } = useContext(AppContext);
@@ -209,7 +206,7 @@ const RecentTxsTable = ({ pageSize, pageNums, totalSize, isAllRecentTxsPage, txS
   // fetches data from api and updates txs
   const updateTxs = async () => {
     try {
-      const recentTxUrl = 'https://dsa-info.herokuapp.com/api/dsa/tx/recent?key=Er2wUbHQ8hYADskWFk9JQntnf'
+      const recentTxUrl = `https://dsa-info.herokuapp.com/api/dsa/tx/recent?key=${DSA_API_KEY}`;
       const response = await axios.get(recentTxUrl);
       const { data } = response.data;
       setTxs(data);

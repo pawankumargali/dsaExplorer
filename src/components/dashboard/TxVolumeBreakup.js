@@ -7,6 +7,8 @@ import ReactEchartsCore from 'echarts-for-react/lib/core';
 import 'echarts/lib/chart/pie';
 import { useContext } from 'react';
 import AppContext, { TxVolDataContext } from '../../context/Context';
+import { colors } from '../../helpers/utils';
+// import { backgroundColor } from 'echarts/lib/theme/dark';
 
 const getOption = (data, isDark) => {
   for(const each in data) {
@@ -52,9 +54,7 @@ const TxVolumeBreakup = () => {
 
   const { currency } = useContext(AppContext);
   const { txVolData, IsTxVolDataReceived } = useContext(TxVolDataContext);
-  const colors = ['#2c7be5','#27bcfd', '#39F3BB', '#999','#d8e2ef'];
-
-
+ 
   const [values, setValues] = useState([]);
   const [areValsSet, setAreValsSet] = useState(false);
   const [total, setTotal] = useState({usd:0, eth:0});

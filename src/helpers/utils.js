@@ -89,14 +89,16 @@ export const rgbaColor = (color = colors[0], alpha = 0.5) => `rgba(${hexToRgb(co
 export const colors = [
   '#2c7be5',
   '#00d97e',
-  '#e63757',
-  '#39afd1',
+  '#999',
   '#fd7e14',
   '#02a8b5',
   '#727cf5',
   '#6b5eae',
   '#ff679b',
-  '#f6c343'
+  '#f6c343',
+  '#39afd1',
+  '#d8e2ef',
+  '#e63757',
 ];
 
 export const themeColors = {
@@ -109,6 +111,8 @@ export const themeColors = {
   light: '#f9fafd',
   dark: '#0b1727'
 };
+
+
 
 export const grays = {
   white: '#fff',

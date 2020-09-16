@@ -7,6 +7,7 @@ import Balances from '../dsaInfo/Balances';
 import BalancesBreakup from '../dsaInfo/BalancesBreakup';
 import PositionsDataProvider from '../dsaInfo/PositionsDataProvider';
 import BalancesDataProvider from '../dsaInfo/BalancesDataProvider';
+import OwnerAddress from './OwnerAddress';
 import DsaTitleCard from './DsaTitleCard';
 
 
@@ -19,14 +20,8 @@ const OwnerInfo = ({ match }) =>  {
 
     return (
         <Fragment>
-        <h5 className="mt-4 mb-2 pb-0 pl-md-2">Owner
-          <a 
-            href={`https://etherscan.io/address/${ownerAddress}`}
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            {' '+ownerAddress}
-          </a>
+        <h5 className="mt-4 mb-2 pb-0 pl-md-2">
+         <OwnerAddress ownerAddress={ownerAddress} />
         </h5>
 
         <Row noGutters className="mt-4 mb-2">
@@ -38,7 +33,7 @@ const OwnerInfo = ({ match }) =>  {
                     // setIsDsaChanged={setIsDsaChanged}
                 />
             </Col>
-          {dsaAddress!=='' &&
+          {!!dsaAddress && dsaAddress!=='' &&
             <Col lg={10} className="col-xxl-3 mb-2 pl-md-2 pr-md-2">
             <Row noGutters>
             

@@ -35,7 +35,7 @@ function DsaIdAndAddress({dsaAddress, dsaId, isPreview}) {
             icon="chevron-right"
             iconAlign="right"
             transform="down-1 shrink-4"
-            className="px-0 font-weight-semi-bold"
+            className="px-0 font-weight-semi-bold dsa-explore-btn"
             style={{marginLeft:'20px'}}
             >
             Explore

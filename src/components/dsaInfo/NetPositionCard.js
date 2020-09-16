@@ -70,6 +70,7 @@ const NetPositionCard = ({ dsaAddress }) => {
 
   const updateTotal  = async () => {
     const {compound, aave, dydx, maker} = positions;
+    // console.log(compound, aave, dydx, maker);
     let totalSupplyInEth=0;
     let totalBorrowInEth=0;
     const [makerColInEth, makerDebtInEth] = await _getTotalMakerColAndDebtInEth(maker);

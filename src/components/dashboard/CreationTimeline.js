@@ -11,8 +11,7 @@ import 'echarts/lib/component/tooltip';
 import 'echarts/lib/component/legend';
 import axios from 'axios';
 import { getGlobalDsaCount } from '../../helpers/dsaInterface';
-
-// import { DSA_API_KEY } from '../../config';
+import { DSA_API_KEY } from '../../config';
 
 function getFormatter(params) {
   const { name, value } = params[0];
@@ -137,8 +136,8 @@ const CreationTimeline = ({ className }) => {
 
   const updateCreationCounts = async () => {
     try {
-      // Before deploying store key and url in env variables
-      const creationCountUrl = `https://dsa-info.herokuapp.com/api/dsa/creation/counts?key=Er2wUbHQ8hYADskWFk9JQntnf`;
+      // Before deploying store key and url in env variables Er2wUbHQ8hYADskWFk9JQntnf
+      const creationCountUrl = `https://dsa-info.herokuapp.com/api/dsa/creation/counts?key=${DSA_API_KEY}`;
       const [countsResponse, totalCount]  = await Promise.all([axios.get(creationCountUrl),getGlobalDsaCount()]);
       const { data } = countsResponse.data;
       setCounts(data);
@@ -220,7 +219,7 @@ const CreationTimeline = ({ className }) => {
     const currentMonth = months[toDay.getUTCMonth()];
     const thirtyOneDaysInMonth = {'Jan':true, 'Mar':true,'May':true,'Jul':true,'Aug':true,'Oct':true,'Dec':true };
     const minusDuration = {
-      'past month':(thirtyOneDaysInMonth[currentMonth] ? 31 : 30)*24*60*60*1000, 
+      'past month':(currentMonth==='Mar' ? (isLeapYear(toDay.getUTCFullYear()) ? 29 : 28 )  : (thirtyOneDaysInMonth[currentMonth] ? 30 : 31))*24*60*60*1000, 
       'past week': 7*24*60*60*1000
     };
     const fromDay = new Date(toDay.valueOf()-minusDuration[currentInterval]);

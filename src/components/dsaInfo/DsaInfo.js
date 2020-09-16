@@ -62,7 +62,8 @@ const DsaInfo = ({ match, history }) =>  {
           <Row noGutters className="my-2">
             <Col md={12} className="col-xxl-3 mb-2 pl-md-2 pr-md-2 d-lg-none">
                 <Owners 
-                  dsaAddress={dsaAddress}  
+                  dsaAddress={dsaAddress}
+                  sizeId="md"   
                 />
             </Col>
             
@@ -85,7 +86,8 @@ const DsaInfo = ({ match, history }) =>  {
             {/* lg-display Owners */}
             <Col lg={2} className="col-xxl-3 mb-2 pl-md-2 pr-md-2 d-none d-lg-block">
                 <Owners 
-                  dsaAddress={dsaAddress}  
+                  dsaAddress={dsaAddress}
+                  sizeId="lg"  
                 />
             </Col>
           </Row>
@@ -93,7 +95,7 @@ const DsaInfo = ({ match, history }) =>  {
           
           <Row noGutters className="my-1">
             
-            <Col lg={6} className="col-xxl-3 mb-2 pl-md-2 pr-md-2">
+            <Col lg={6} md={12} className="col-xxl-3 mb-2 pl-md-2 pr-md-2">
               <PositionsDataProvider>
                 <PositionsBreakupChart 
                   dsaAddress={dsaAddress} 
@@ -102,7 +104,7 @@ const DsaInfo = ({ match, history }) =>  {
             </Col>
 
             {/* md-display balances */}
-            <Col  md={12} className="col-xxl-3 mb-2 pl-md-2 pr-md-2 d-block d-lg-none">
+            <Col  lg={6} md={12} className="col-xxl-3 mb-2 pl-md-2 pr-md-2 d-block d-lg-none">
               <BalancesDataProvider>
                 <Balances 
                   dsaAddress={dsaAddress} 

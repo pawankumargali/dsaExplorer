@@ -55,6 +55,7 @@ const DetailedPosition = ({ dsaAddress }) => {
 
 
   const updateValues = async () => {
+    if(!position) return;
     const vals = {
       supply: { usd:0, eth:0 },
       borrow: { usd:0, eth:0 }

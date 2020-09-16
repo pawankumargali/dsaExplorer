@@ -5,14 +5,15 @@ import Badge from 'reactstrap/es/Badge';
 import { Col, Row } from 'reactstrap';
 import ButtonIcon from '../common/ButtonIcon';
 import { hashFormatter } from '../../helpers/utils';
-import AppContext from '../../context/Context';
+// import AppContext from '../../context/Context';
 import axios from 'axios';
 import ethIcon from '../../assets/img/tokens/eth.svg';
+import { DSA_API_KEY } from '../../config';
 
 const CustomTotal = ({ sizePerPage, totalSize, page, lastIndex }) =>  {
   if(totalSize===0) 
     return (<span>
-            No matches
+            No txns
           </span>);
   return (<span>
           {(page - 1) * sizePerPage + 1} to {lastIndex > totalSize ? totalSize : lastIndex} of {totalSize} 
@@ -156,16 +157,15 @@ const columns = [
   }
 ];
 
-const PurchasesTable = ({ pageSize, pageNums, totalSize, txSearchText, setTotalSize, dsaAddress }) => {
+const PurchasesTable = ({ pageSize, totalSize, txSearchText, setTotalSize, dsaAddress }) => {
 
 
-  const { isDark } = useContext(AppContext);
+  // const { isDark } = useContext(AppContext);
   // stores all txs fetched from api
   const [txs, setTxs] = useState([]);
   // stores txs to be displayed based of search filter text
   const [displayTxs, setDisplayTxs] = useState(txs);
   // keeps track of the current page in pagination
-  const [currentPage, setCurrentPage] = useState(1);
   // Pagination options
   const [options, setOptions] = useState({custom:true, sizePerPage:pageSize, totalSize});
 
@@ -173,7 +173,7 @@ const PurchasesTable = ({ pageSize, pageNums, totalSize, txSearchText, setTotalS
   // fetches data from api and updates txs
   const updateTxs = async () => {
     try {
-      const recentTxUrl = `https://dsa-info.herokuapp.com/api/dsa/tx/recent/${dsaAddress}?key=Er2wUbHQ8hYADskWFk9JQntnf`
+      const recentTxUrl = `https://dsa-info.herokuapp.com/api/dsa/tx/recent/${dsaAddress}?key=${DSA_API_KEY}`;
       const response = await axios.get(recentTxUrl);
       const { data } = response.data;
       setTxs(data);
@@ -220,20 +220,11 @@ const PurchasesTable = ({ pageSize, pageNums, totalSize, txSearchText, setTotalS
 
   const handlePrevPage = ({ page, onPageChange }) => () => {
     onPageChange(page - 1);
-    setCurrentPage(page - 1);
   };
 
   const handleNextPage = ({ page, onPageChange }) => () => {
     onPageChange(page + 1);
-    setCurrentPage(page + 1);
   };
-
-
-  const handlePageSelection = ({ onPageChange }, page) => () => {
-    onPageChange(page);
-    setCurrentPage(page);
-  }
-
 
   return (
     <PaginationProvider pagination={paginationFactory(options)}>

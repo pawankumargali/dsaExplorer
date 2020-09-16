@@ -1,14 +1,9 @@
 import Web3 from 'web3';
 import DSA from 'dsa-sdk';
 import instaListContract from './instaListContract';
-// const Web3=require('web3');
-// const DSA=require('dsa-sdk');
-// const instaListContract = require('./helpers/instaListContract');
+import { WEB3_PROVIDER_URL } from '../config';
 
-
-// const WEB3_PROVIDER_URL='https://mainnet.infura.io/v3/8b1cb9c44d4a4c168674b43bfde366c9';
-// const web3 =  new Web3(new Web3.providers.HttpProvider(WEB3_PROVIDER_URL));
-const web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io/v3/8d6142b291c84deba374beb2bf83834f'));
+const web3 = new Web3(new Web3.providers.HttpProvider(WEB3_PROVIDER_URL));
 const dsa = new DSA(web3);
 const instaList = new web3.eth.Contract(instaListContract.abi, instaListContract.address);
 

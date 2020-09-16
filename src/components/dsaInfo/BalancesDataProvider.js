@@ -3,11 +3,11 @@ import { getBalances } from '../../helpers/dsaInterface';
 import { getSupportedTokenPricesInUSD } from '../../helpers/coinExPrices';
 import { BalancesDataContext } from '../../context/Context';
 import tokens from '../../helpers/tokens';
+import { colors } from '../../helpers/utils';
 
 const BalancesProvider = ({ children }) => {
 
   const [balances, setBalances] = useState([]);
-  const colors=['#2c7be5','#27bcfd', '#39F3BB', '#999','#d8e2ef'];
 
   const initBalances = async dsaAddress => {      
     const balData = await getBalances(dsaAddress);

@@ -40,9 +40,11 @@ const columns = [
   }
 ];
 
-const OwnersTable = ({ pageSize, totalSize, searchText, setTotalSize, owners }) => {
+const OwnersTable = ({ pageSize, totalSize, owners, searchText, setTotalSize }) => {
 
 
+  // const { isDark } = useContext(AppContext);
+  
   // const { isDark } = useContext(AppContext);
   const [displayOwners, setDisplayOwners] = useState([]);
   // Pagination options
@@ -50,7 +52,6 @@ const OwnersTable = ({ pageSize, totalSize, searchText, setTotalSize, owners }) 
 
   // updates the owners to be displayed based on search filter text
   const updateDisplayOwners = () => {
-    console.log('Triggered');
     if(searchText==="") {
       setDisplayOwners(owners);
       setTotalSize(owners.length);
@@ -71,7 +72,9 @@ const OwnersTable = ({ pageSize, totalSize, searchText, setTotalSize, owners }) 
   useEffect(() => {
     if(owners.length!==0)
       updateDisplayOwners();
-  }, [displayOwners.length, totalSize]);
+  }, [owners.length, searchText, displayOwners.length]);
+
+
   
   let table = createRef();
 
@@ -106,7 +109,7 @@ const OwnersTable = ({ pageSize, totalSize, searchText, setTotalSize, owners }) 
                 {...paginationTableProps}
               />
             </div>
-            {owners.length>4 &&
+            {owners.length>pageSize &&
             <Row noGutters className="px-1 py-2">
               <Col className="pl-1 fs--1 py-1">
                 <CustomTotal {...paginationProps} lastIndex={lastIndex} />
@@ -120,8 +123,7 @@ const OwnersTable = ({ pageSize, totalSize, searchText, setTotalSize, owners }) 
                   disabled={paginationProps.page===1}
                   className="pagination-page-num-btn font-weight-800"
                   style={{fontWeight:600}}
-                >
-                  
+                > 
                 </ButtonIcon>
                 
                 <ButtonIcon

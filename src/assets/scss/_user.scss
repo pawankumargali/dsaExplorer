@@ -115,22 +115,31 @@
     .search-box-icon { width: 12px; }
 }
 
+@media(max-width:768px) {
+ #all-txs-search-form input { width: 92px;}
+}
+
 
 /*******************************************DSA PAGE******************************************************/
 .dsa-page-lg-row-1 { height: 200px; }
 .dsa-page-lg-row-2 { height: 370px; }
 @media(max-width:991px) {
-    .dsa-page-lgrow-1, .dsa-page-lg-row-2 {height:auto};
+    .dsa-page-lg-row-1, .dsa-page-lg-row-2 {height:auto};
 }
 
 
 #dsa-header-row {
     display: flex;
-    // flex-wrap:wrap;
     justify-content: start;
     align-items: stretch;
 }
 
+// SUPPLY BORROW PROGRESS BAR
+.dsa-page-lg-row-1 {
+    .progress-bar {
+        min-width: 32px;
+    } 
+}
 .card-collapsible-btn-div {
     position: absolute;
     bottom:0px;
@@ -147,13 +156,7 @@
     padding-left:1rem;
 }
 
-// #dsa-bal-col { width:400px; }
-// #dsa-owners-col { width:240px; }
-// #dsa-positions-col { width: calc(100%-400px-240px); }
-
-
 @media(max-width: 400px) {
-//     #dsa-bal-col { width:100%; padding-right:2rem; }
     .bal-breakup-usd { display:none !important; }
 }
 
@@ -194,7 +197,7 @@
 }
 
 
-#all-balances-search-form, #dsa-txs-search-form {
+#dsa-txs-search-form {
     input {
         width:100%;
         height:28px;
@@ -202,9 +205,72 @@
     .search-box-icon { width: 12px; }
 }
 
-.all-owners-search-form {
-    input {
-        width:'30px';
-        height:'10px';
+
+#all-balances-search-form {
+    position: absolute;
+    top:-28px;
+    right:0px;
+}
+
+#all-owners-search-form-lg, #all-owners-search-form-md {
+  position: absolute;
+  top:-28px;
+  right:-10px;
+}
+
+#all-balances-search-form input { width :200px; }
+#all-owners-search-form-lg input, #all-owners-search-form-md input { width: 105px;}
+
+@media(max-width: 991px) {
+    #all-owners-search-form-lg input, #all-owners-search-form-md input { width : 200px;}
+}
+
+@media(max-width: 576px) {
+    #dsa-txs-search-form input { width:105px; }
+}
+
+@media(max-width: 450px) {
+    #all-balances-search-form input { width : 105px;}
+}
+
+/*******************************************OWNERS PAGE******************************************************/
+@media(max-width: 768px) {
+    .dsa-explore-btn {
+        position: relative;
+        width:185%;
+        top:12px;
+        right:20px;
     }
+}
+
+#all-dsa-search-form {
+    position: absolute;
+    top:-28px;
+    right:-10px;
+}
+
+#all-dsa-search-form input { width: 105px;}
+
+@media(max-width: 991px) {
+    #all-dsa-search-form input { width : 200px;}
+}
+
+.dsas-table-address-cell {
+    width:150px;
+    border-radius: 4%;
+    text-align: center !important;
+}
+
+@media(max-width:991px) {
+    .dsas-table-address-cell {
+        width:350px;
+        border-radius: 2%;
+    }
+}
+
+@media(max-width:576px) {
+    .dsas-table-address-cell {
+        width:200px;
+        border-radius: 2%;
+    }    
 }

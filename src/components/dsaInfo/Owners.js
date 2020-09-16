@@ -7,11 +7,12 @@ import OwnersTable from './OwnersTable';
 import { getAuthorizedAddresses } from '../../helpers/dsaInterface';
 
 
-const Owners = ({dsaAddress}) => {
+const Owners = ({dsaAddress , sizeId}) => {
   
   const [totalSize, setTotalSize] = useState(0);
   const pageSize = 4;
-  const [ownerSearchText, setOwnerSearchText] = useState('');
+  const [ownersSearchText, setOwnersSearchText] = useState('');
+
   const [owners, setOwners] = useState([]);
  
   // fetches data and updates owners
@@ -23,7 +24,6 @@ const Owners = ({dsaAddress}) => {
       data.forEach((owner, index) => ownrs.push({id:index, address:owner}));
       setOwners(ownrs);
       setTotalSize(ownrs.length);
-      console.log(ownrs.length);
     }
     catch(err) {
       console.log(err);
@@ -37,29 +37,27 @@ const Owners = ({dsaAddress}) => {
 
   return (
     <Card className="dsa-page-lg-row-1">
-      <FalconCardHeader title="Owners" titleTag="h6" light={false}>
-      {/* {owners.length>10 && 
+      <FalconCardHeader title="Owners" titleTag="h6" light={false} >
+      {owners.length>pageSize && 
         <InputGroup size="sm" className="input-group input-group-sm mt-3">
             <SearchBox 
               icon="filter" 
-              className="all-owners-search-form" 
-              placeholder="Filter owners"
-              searchText={ownerSearchText}
-              setSearchText={setOwnerSearchText}
+              idName={`all-owners-search-form-${sizeId}`}
+              placeholder="Filter Owners"
+              searchText={ownersSearchText}
+              setSearchText={setOwnersSearchText}
               onSubmitHandler={e => e.preventDefault()}
             />
           </InputGroup>
-      } */}
+      }
       </FalconCardHeader>
       <CardBody className="p-0 pb-3">
         <OwnersTable 
           pageSize={pageSize}
           totalSize={totalSize}
-          setTotalSize={setTotalSize}
           owners={owners}
-          totalSize={totalSize}
-          searchText={ownerSearchText}
-          setSearchText={setOwnerSearchText}
+          searchText={ownersSearchText}
+          setTotalSize={setTotalSize}
         />      
       </CardBody>
  

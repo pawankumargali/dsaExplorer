@@ -1,7 +1,6 @@
 import React from 'react';
 import { Form, Input } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Redirect } from 'react-router-dom';
 
 const SearchBox = ({icon, placeholder, idName, searchText, setSearchText, onSubmitHandler}) =>  {
 
@@ -9,7 +8,7 @@ const SearchBox = ({icon, placeholder, idName, searchText, setSearchText, onSubm
   const handleChange = e => setSearchText(e.target.value);
   
   return (
-    <Form inline className="search-box" id={idName} onSubmit={onSubmitHandler}>
+    <Form inline className='search-box' id={idName} onSubmit={onSubmitHandler}>
       <Input type="search" placeholder={placeholder} aria-label="Search" className="search-input"
         spellCheck={false}
         value={searchText}

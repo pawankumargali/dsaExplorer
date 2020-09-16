@@ -36,7 +36,16 @@ const RecentTxs = ({isPreview}) => {
 
   return (
     <Card className={isPreview ? "" : "my-4"}>
-      <FalconCardHeader title="Recent Transactions" titleTag="h5" light={false}>
+      <FalconCardHeader  
+        title={
+          <Fragment>
+            Recent 
+            <span className="d-none d-sm-inline"> Transactions</span>
+            <span className="d-inline d-sm-none"> Txs</span>
+          </Fragment>
+        }
+        titleTag="h5" 
+        light={false}>
         <InputGroup size="sm" className="input-group input-group-sm">
 
             {isPreview ? 
@@ -61,7 +70,7 @@ const RecentTxs = ({isPreview}) => {
               setSearchText={setTxSearchText}
               onSubmitHandler={e => e.preventDefault()}
             />
-            <span className="font-weight-semi-bold mr-1" style={showRecordsInlineStyle}>Show </span>
+            <span className="font-weight-semi-bold mr-1 d-none d-sm-block" style={showRecordsInlineStyle}>Show</span>
             <CustomInput 
               type="select" 
               id="bulk-select"
@@ -73,7 +82,7 @@ const RecentTxs = ({isPreview}) => {
               <option value="50">50</option>
               <option value={totalSize}>All</option>
             </CustomInput>
-            <span className="font-weight-semi-bold ml-1" style={showRecordsInlineStyle}>records</span>
+            <span className="font-weight-semi-bold ml-1 d-none d-sm-block" style={showRecordsInlineStyle}>records</span>
             </Fragment>)}
           </InputGroup>
       </FalconCardHeader>
@@ -84,7 +93,6 @@ const RecentTxs = ({isPreview}) => {
           totalSize={totalSize}
           pageNums={pageNums}
           txSearchText={txSearchText}
-          setPageSize={setPageSize}
           setTotalSize={setTotalSize}
         />
       </RecentTxsDataProvider>        
