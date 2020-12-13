@@ -178,8 +178,8 @@ const CreationTimeline = ({ className }) => {
     const minusDuration = (isLeapYear(toDate.getUTCFullYear()) ? 366 : 365)*24*60*60*1000;
     const fromDate = new Date(toDate.valueOf() - minusDuration);
     let i = 0;
-    let currentMonthIndex = fromDate.getUTCMonth() + 1;
-    let currentYear = fromDate.getUTCFullYear();
+    let currentMonthIndex = (fromDate.getUTCMonth())%11;
+    let currentYear = fromDate.getUTCFullYear()+1;
     while(i<12) {
       if(i==0)
         monthsInPastYear.push(months[currentMonthIndex]+' '+currentYear);
